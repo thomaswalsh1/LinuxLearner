@@ -15,4 +15,11 @@ int validate_grep_recursive(void);
 int validate_grep_invert(void);
 int validate_grep_combo(void);
 
+// Cut validators
+int validate_cut_characters(void);
+int validate_cut_bytes(void);
+int validate_cut_delimiter(void);
+int validate_cut_fields(void);
+int validate_cut_only_delimited(void);
+
 #endif

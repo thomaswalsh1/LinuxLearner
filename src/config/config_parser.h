@@ -8,6 +8,13 @@ typedef struct {
     int count;
 } ExerciseList;
 
+
+/**
+ * Loads all the exercises from directory with config files
+ * @return ExerciseList comprised of all the .conf files in labs_reprise
+ */
+ExerciseList load_exercises_from_all(void);
+
 /**
  * Load all exercises from config files in a directory
  * @param config_dir Directory containing .conf files
@@ -27,5 +34,6 @@ void free_exercise_list(ExerciseList list);
  * @return Function pointer to the validator, or NULL if not found
  */
 int (*get_validator_function(const char *validator_name))(void);
+
 
 #endif

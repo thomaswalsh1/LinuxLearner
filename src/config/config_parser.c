@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <errno.h>
 #include <ctype.h>
 
 #define MAX_LINE 512
@@ -24,6 +25,11 @@ static ValidatorEntry validator_registry[] = {
     {"grep_recursive", validate_grep_recursive},
     {"grep_invert", validate_grep_invert},
     {"grep_combo", validate_grep_combo},
+    {"cut_characters", validate_cut_characters},
+    {"cut_bytes", validate_cut_bytes},
+    {"cut_delimiter", validate_cut_delimiter},
+    {"cut_fields", validate_cut_fields},
+    {"cut_only_delimited", validate_cut_only_delimited},
     {NULL, NULL}
 };
 
@@ -118,9 +124,55 @@ static Exercise parse_conf_file(const char *filepath) {
     return ex;
 }
 
-// Comparison function for sorting .conf files
-static int compare_conf_files(const struct dirent **a, const struct dirent **b) {
-    return strcmp((*a)->d_name, (*b)->d_name);
+ExerciseList load_exercises_from_all(void) {
+    ExerciseList all = {0};
+    struct dirent **namelist;
+    int n;
+
+    all.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
+    if (!all.exercises) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return all;
+    }
+    all.count = 0;
+
+    // Scan the labs directory for subdirectories
+    n = scandir("labs", &namelist, NULL, NULL);
+    if (n < 0) {
+        int errsv = errno; 
+        fprintf(stderr, "Errno is: %s \n", strerror(errsv));
+        perror("scandir");
+        free(all.exercises);
+        all.exercises = NULL;
+        return all;
+    }
+    
+    for (int i = 0; i < n && all.count < MAX_EXERCISES; i++) {
+        // grab a point from the namelist
+        struct dirent *ent = namelist[i];
+
+        // ignore a hidden directory
+        if (ent->d_name[0] == '.') {
+            free(ent);
+            continue;
+        }
+
+        char config_path[512];
+        snprintf(config_path, sizeof(config_path), "labs/%s/config", ent->d_name);
+
+        ExerciseList subdirectory = load_exercises_from_config(config_path);
+
+        for (int j = 0; j < subdirectory.count && all.count < MAX_EXERCISES; j++) {
+            all.exercises[all.count++] = subdirectory.exercises[j];
+        }
+
+        // Free the sub-list storage
+        free(subdirectory.exercises);
+        free(ent);
+    }
+
+    free(namelist);
+    return all;
 }
 
 ExerciseList load_exercises_from_config(const char *config_dir) {
@@ -128,7 +180,7 @@ ExerciseList load_exercises_from_config(const char *config_dir) {
     struct dirent **namelist;
     int n;
     
-    n = scandir(config_dir, &namelist, NULL, compare_conf_files);
+    n = scandir(config_dir, &namelist, NULL, NULL);
     
     if (n < 0) {
         perror("scandir");

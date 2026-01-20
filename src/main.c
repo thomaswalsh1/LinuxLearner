@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "exercises.h"
 #include "config/config_parser.h"
 #include "engine/runner.h"
@@ -17,7 +18,8 @@ int main(void) {
 
     // generate exercise list from configuration files
     // warning from 01/20/26: hardcoded path, should change in future versions
-    ExerciseList exercise_list = load_exercises_from_config("labs_reprise/grep/config");
+    // ExerciseList exercise_list = load_exercises_from_config("labs_reprise/grep/config");
+    ExerciseList exercise_list = load_exercises_from_all();
     exercises = exercise_list.exercises; // unloading exercises to global variable
     exercise_count = exercise_list.count; // unloading exercise count to global variable
 

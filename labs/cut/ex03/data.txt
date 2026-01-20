@@ -1,0 +1,3 @@
+alice:Engineer:5000
+bob:Manager:6000
+charlie:Developer:5500
