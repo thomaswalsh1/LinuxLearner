@@ -1,0 +1,19 @@
+# build artifacts
+*.o
+linuxplus-learn
+
+# debug
+*.log
+
+# ncurses/editor noise
+*~
+
+# lab outputs
+labs/**/output*.txt
+labs/**/recursive.txt
+labs/**/count*.txt
+labs/**/results*.txt
+
+# editor
+.vscode/
+.idea/
