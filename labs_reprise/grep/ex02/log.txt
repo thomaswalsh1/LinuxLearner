@@ -1,0 +1,5 @@
+info: startup complete
+error: file not found
+warning: disk space low
+error: network unreachable
+info: shutdown complete

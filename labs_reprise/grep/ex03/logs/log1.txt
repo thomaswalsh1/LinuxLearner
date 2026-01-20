@@ -1,0 +1,2 @@
+info: start
+error: log1 failed

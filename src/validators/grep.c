@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 
+int validate_grep_basic(void) {
+    return file_exists("errors.txt") &&
+           file_contains("errors.txt", "error");
+}
+
 int validate_grep_count(void) {
     if (!file_exists("count.txt")) return 0;
     FILE *f = fopen("count.txt", "r");
