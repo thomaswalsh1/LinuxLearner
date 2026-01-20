@@ -1,0 +1,4 @@
+Info: startup complete
+Error: file missing
+WARNING: disk low
+error: network unreachable
