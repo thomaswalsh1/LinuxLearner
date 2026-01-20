@@ -8,11 +8,8 @@ linuxplus-learn
 # ncurses/editor noise
 *~
 
-# lab outputs
-labs/**/output*.txt
-labs/**/recursive.txt
-labs/**/count*.txt
-labs/**/results*.txt
+#backups for the labs folder
+labs_backup
 
 # editor
 .vscode/
