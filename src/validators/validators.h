@@ -32,4 +32,29 @@ int validate_sort_output(void);
 int validate_sort_reverse(void);
 int validate_sort_combined(void);
 
+// Wc validators
+int validate_wc_bytes(void);
+int validate_wc_lines(void);
+int validate_wc_words(void);
+int validate_wc_chars(void);
+int validate_wc_max_line_length(void);
+
+// Cat validators
+int validate_cat_show_all(void);
+int validate_cat_show_ends(void);
+int validate_cat_number(void);
+int validate_cat_squeeze_blank(void);
+int validate_cat_show_tabs(void);
+int validate_cat_show_nonprinting(void);
+
+// Sed validators
+int validate_sed_expression(void);
+int validate_sed_file(void);
+int validate_sed_extended_regex(void);
+
+// Awk validators
+int validate_awk_field_separator(void);
+int validate_awk_file(void);
+int validate_awk_sandbox(void);
+
 #endif

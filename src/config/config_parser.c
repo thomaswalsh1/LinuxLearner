@@ -38,6 +38,23 @@ static ValidatorEntry validator_registry[] = {
     {"sort_output", validate_sort_output},
     {"sort_reverse", validate_sort_reverse},
     {"sort_combined", validate_sort_combined},
+    {"wc_bytes", validate_wc_bytes},
+    {"wc_lines", validate_wc_lines},
+    {"wc_words", validate_wc_words},
+    {"wc_chars", validate_wc_chars},
+    {"wc_max_line_length", validate_wc_max_line_length},
+    {"cat_show_all", validate_cat_show_all},
+    {"cat_show_ends", validate_cat_show_ends},
+    {"cat_number", validate_cat_number},
+    {"cat_squeeze_blank", validate_cat_squeeze_blank},
+    {"cat_show_tabs", validate_cat_show_tabs},
+    {"cat_show_nonprinting", validate_cat_show_nonprinting},
+    {"sed_expression", validate_sed_expression},
+    {"sed_file", validate_sed_file},
+    {"sed_extended_regex", validate_sed_extended_regex},
+    {"awk_field_separator", validate_awk_field_separator},
+    {"awk_file", validate_awk_file},
+    {"awk_sandbox", validate_awk_sandbox},
     {NULL, NULL}
 };
 

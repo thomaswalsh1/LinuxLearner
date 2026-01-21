@@ -1,0 +1,5 @@
+Short
+This is a medium length line in the middle
+Another short one
+The longest line in this file is here and it should be detected by the max line length option
+Final line

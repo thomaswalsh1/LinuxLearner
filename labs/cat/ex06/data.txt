@@ -1,0 +1,3 @@
+Line with regular text
+Line with special characters
+Another normal line
