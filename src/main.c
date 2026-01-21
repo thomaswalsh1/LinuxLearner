@@ -18,7 +18,8 @@ int main(void) {
 
     // generate exercise list from configuration files
     // warning from 01/20/26: hardcoded path, should change in future versions
-    // ExerciseList exercise_list = load_exercises_from_config("labs_reprise/grep/config");
+    // ExerciseList exercise_list = load_exercises_from_config("labs/grep/config");
+    // ExerciseList exercise_list = test_exercises_from_config("labs/grep/config");
     ExerciseList exercise_list = load_exercises_from_all();
     exercises = exercise_list.exercises; // unloading exercises to global variable
     exercise_count = exercise_list.count; // unloading exercise count to global variable

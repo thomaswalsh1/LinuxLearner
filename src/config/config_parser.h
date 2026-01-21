@@ -22,6 +22,7 @@ ExerciseList load_exercises_from_all(void);
  */
 ExerciseList load_exercises_from_config(const char *config_dir);
 
+ExerciseList test_exercises_from_config(const char *config_dir);
 /**
  * Free the exercise list allocated by load_exercises_from_config
  * @param list The ExerciseList to free

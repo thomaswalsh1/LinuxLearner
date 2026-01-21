@@ -125,54 +125,78 @@ static Exercise parse_conf_file(const char *filepath) {
 }
 
 ExerciseList load_exercises_from_all(void) {
-    ExerciseList all = {0};
-    struct dirent **namelist;
+    ExerciseList list = {0};
+    struct dirent **subdirs;
     int n;
-
-    all.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
-    if (!all.exercises) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return all;
-    }
-    all.count = 0;
-
-    // Scan the labs directory for subdirectories
-    n = scandir("labs", &namelist, NULL, NULL);
+    
+    // Scan the labs/ directory for subdirectories (grep, cut, cat, etc.)
+    n = scandir("labs/", &subdirs, NULL, alphasort);
     if (n < 0) {
-        int errsv = errno; 
-        fprintf(stderr, "Errno is: %s \n", strerror(errsv));
         perror("scandir");
-        free(all.exercises);
-        all.exercises = NULL;
-        return all;
+        return list;
     }
     
-    for (int i = 0; i < n && all.count < MAX_EXERCISES; i++) {
-        // grab a point from the namelist
-        struct dirent *ent = namelist[i];
-
-        // ignore a hidden directory
-        if (ent->d_name[0] == '.') {
-            free(ent);
+    // Allocate space for exercises
+    list.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
+    if (!list.exercises) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return list;
+    }
+    
+    list.count = 0;
+    
+    // Iterate through subdirectories
+    for (int i = 0; i < n; i++) {
+        // Skip . and .. entries
+        if (subdirs[i]->d_name[0] == '.') {
+            free(subdirs[i]);
             continue;
         }
-
-        char config_path[512];
-        snprintf(config_path, sizeof(config_path), "labs/%s/config", ent->d_name);
-
-        ExerciseList subdirectory = load_exercises_from_config(config_path);
-
-        for (int j = 0; j < subdirectory.count && all.count < MAX_EXERCISES; j++) {
-            all.exercises[all.count++] = subdirectory.exercises[j];
+        
+        // Build path to config subdirectory
+        char config_path[2048];
+        int written = snprintf(config_path, sizeof(config_path), "labs/%s/config", 
+                               subdirs[i]->d_name);
+        
+        if (written < 0 || written >= (int)sizeof(config_path)) {
+            free(subdirs[i]);
+            continue;
         }
-
-        // Free the sub-list storage
-        free(subdirectory.exercises);
-        free(ent);
+        
+        // Scan the config subdirectory for .conf files
+        struct dirent **configs;
+        int config_count = scandir(config_path, &configs, NULL, alphasort);
+        
+        if (config_count > 0) {
+            // Process each .conf file in this config directory
+            for (int j = 0; j < config_count && list.count < MAX_EXERCISES; j++) {
+                if (configs[j]->d_name[0] != '.' && 
+                    strlen(configs[j]->d_name) > 5) {
+                    
+                    char *ext = configs[j]->d_name + strlen(configs[j]->d_name) - 5;
+                    if (strcmp(ext, ".conf") == 0) {
+                        char filepath[2048];
+                        written = snprintf(filepath, sizeof(filepath), "%s/%s", 
+                                           config_path, configs[j]->d_name);
+                        
+                        if (written >= 0 && written < (int)sizeof(filepath)) {
+                            Exercise ex = parse_conf_file(filepath);
+                            if (ex.id) {
+                                list.exercises[list.count++] = ex;
+                            }
+                        }
+                    }
+                }
+                free(configs[j]);
+            }
+            free(configs);
+        }
+        
+        free(subdirs[i]);
     }
-
-    free(namelist);
-    return all;
+    free(subdirs);
+    
+    return list;
 }
 
 ExerciseList load_exercises_from_config(const char *config_dir) {
@@ -181,6 +205,51 @@ ExerciseList load_exercises_from_config(const char *config_dir) {
     int n;
     
     n = scandir(config_dir, &namelist, NULL, NULL);
+    
+    if (n < 0) {
+        perror("scandir");
+        return list;
+    }
+    
+    // Allocate space for exercises
+    list.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
+    if (!list.exercises) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return list;
+    }
+    
+    list.count = 0;
+    
+    // Process each .conf file
+    for (int i = 0; i < n && list.count < MAX_EXERCISES; i++) {
+        if (namelist[i]->d_name[0] != '.' && 
+            strlen(namelist[i]->d_name) > 5) {
+            
+            char *ext = namelist[i]->d_name + strlen(namelist[i]->d_name) - 5;
+            if (strcmp(ext, ".conf") == 0) {
+                char filepath[512];
+                snprintf(filepath, sizeof(filepath), "%s/%s", 
+                         config_dir, namelist[i]->d_name);
+                
+                Exercise ex = parse_conf_file(filepath);
+                if (ex.id) {
+                    list.exercises[list.count++] = ex;
+                }
+            }
+        }
+        free(namelist[i]);
+    }
+    free(namelist);
+    
+    return list;
+}
+
+ExerciseList test_exercises_from_config(const char *config_dir) {
+    ExerciseList list = {0};
+    struct dirent **namelist;
+    int n;
+    
+    n = scandir(config_dir, &namelist, NULL, alphasort);
     
     if (n < 0) {
         perror("scandir");
