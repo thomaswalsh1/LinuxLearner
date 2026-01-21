@@ -17,7 +17,7 @@ typedef struct {
 } ValidatorEntry;
 
 static ValidatorEntry validator_registry[] = {
-    {"file_exists", validate_grep_basic},
+    {"grep_basic", validate_grep_basic},
     {"grep_count", validate_grep_count},
     {"grep_dir_skip", validate_grep_dir_skip},
     {"grep_extended", validate_grep_extended},
