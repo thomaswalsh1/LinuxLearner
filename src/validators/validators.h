@@ -32,4 +32,11 @@ int validate_sort_output(void);
 int validate_sort_reverse(void);
 int validate_sort_combined(void);
 
+// Wc validators
+int validate_wc_bytes(void);
+int validate_wc_lines(void);
+int validate_wc_words(void);
+int validate_wc_chars(void);
+int validate_wc_max_line_length(void);
+
 #endif

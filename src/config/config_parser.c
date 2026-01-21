@@ -38,6 +38,11 @@ static ValidatorEntry validator_registry[] = {
     {"sort_output", validate_sort_output},
     {"sort_reverse", validate_sort_reverse},
     {"sort_combined", validate_sort_combined},
+    {"wc_bytes", validate_wc_bytes},
+    {"wc_lines", validate_wc_lines},
+    {"wc_words", validate_wc_words},
+    {"wc_chars", validate_wc_chars},
+    {"wc_max_line_length", validate_wc_max_line_length},
     {NULL, NULL}
 };
 
