@@ -8,6 +8,15 @@ linuxplus-learn
 # ncurses/editor noise
 *~
 
+# any log file created by Thomas
+*logs.txt
+
+# any lab output
+output.txt
+
+# don't try to upload old labs
+labs_old
+
 #backups for the labs folder
 labs_backup
 

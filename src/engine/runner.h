@@ -9,18 +9,29 @@
 // Global variable for the project root
 extern char project_root[512];
 
-// Initializing the project root
+/**
+ * Initializes the project root
+ */
 void init_project_root(void);
 
 // Generic runner for any exercise
 int run_exercise(const Exercise *ex);
+
+/**
+ * Run the title screen
+ * @return message of success or exit
+ */
 int run_title(void);
+
+/**
+ * Run the explanation menu
+ * @return menu option
+ */
 int run_explanation(void);
 
-// Launch shell in sandbox
+/**
+ * Launch a "sandbox version of the shell"
+ */
 void launch_shell(void);
-
-// Reset our sandbox
-void reset_lab(const char *lab_dir);
 
 #endif

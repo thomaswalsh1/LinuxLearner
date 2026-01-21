@@ -12,7 +12,8 @@ typedef struct {
     const char *target_file;
 } Exercise;
 
-extern Exercise exercises[];
-extern const int exercise_count;
+// Global exercises array and count
+extern Exercise *exercises;
+extern int exercise_count;
 
 #endif

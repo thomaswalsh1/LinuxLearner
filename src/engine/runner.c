@@ -9,8 +9,9 @@
 #include <errno.h>
 
 char project_root[512];
+
 void init_project_root(void) {
-    if (!getcwd(project_root, sizeof(project_root))) {
+    if (!getcwd(project_root, sizeof(project_root))) { // assign to the project root buffer
         perror("getcwd");
         exit(1);
     }
@@ -46,25 +47,26 @@ void reset_all_output_files(void) {
 int run_exercise(const Exercise *ex) {
     int ch;
 
-    // Reset to head directory
+    // reset to lab directory
     if (chdir(project_root) != 0) {
         perror("chdir to project root");
         return ACTION_EXIT;
     }
 
-    // Change to exercise sandbox
+    // change to exercise sandbox
     if (chdir(ex->lab_dir) != 0) {
         perror("chdir to correct exercise");
         return ACTION_EXIT;
     }
 
-    // Draw instructions
+    // write the instructions
     clear();
     print_center(stdscr, 2, ex->title);
     print_center_multiline(stdscr, 4, ex->description);
     print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
     refresh();
 
+    // track input
     while (1) {
         ch = getch();
         if (ch == 's' || ch == 'S') launch_shell();
@@ -74,9 +76,10 @@ int run_exercise(const Exercise *ex) {
 }
 
 void launch_shell(void) {
-    def_prog_mode();
-    endwin();
+    def_prog_mode(); // prog mode
+    endwin(); // close out
 
+    // introduce the shell to the user
     printf("\n--- LAB SHELL ---\n");
     printf("Type your commands. Type 'exit' to return.\n\n");
     system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
@@ -103,7 +106,7 @@ int run_title(void) {
 
 int run_explanation(void) {
     int ch;
-    // explanation
+    // explanation menu
     clear();
     print_center(stdscr, 2, "How this works:");
     print_center_multiline(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
