@@ -1,4 +1,0 @@
-info: system started
-error: file not found
-warning: disk almost full
-error: network unreachable
