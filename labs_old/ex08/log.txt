@@ -1,4 +1,0 @@
-Info: startup
-Error: file missing
-warning: disk low
-error: network down

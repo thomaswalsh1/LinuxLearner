@@ -1,2 +1,0 @@
-error: log1 failed
-info: ok

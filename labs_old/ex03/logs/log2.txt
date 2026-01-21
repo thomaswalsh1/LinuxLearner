@@ -1,2 +1,0 @@
-warning: log2 warning
-error: log2 failed
