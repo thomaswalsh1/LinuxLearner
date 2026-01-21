@@ -49,6 +49,9 @@ static ValidatorEntry validator_registry[] = {
     {"cat_squeeze_blank", validate_cat_squeeze_blank},
     {"cat_show_tabs", validate_cat_show_tabs},
     {"cat_show_nonprinting", validate_cat_show_nonprinting},
+    {"sed_expression", validate_sed_expression},
+    {"sed_file", validate_sed_file},
+    {"sed_extended_regex", validate_sed_extended_regex},
     {NULL, NULL}
 };
 

@@ -47,4 +47,9 @@ int validate_cat_squeeze_blank(void);
 int validate_cat_show_tabs(void);
 int validate_cat_show_nonprinting(void);
 
+// Sed validators
+int validate_sed_expression(void);
+int validate_sed_file(void);
+int validate_sed_extended_regex(void);
+
 #endif
