@@ -30,6 +30,14 @@ static ValidatorEntry validator_registry[] = {
     {"cut_delimiter", validate_cut_delimiter},
     {"cut_fields", validate_cut_fields},
     {"cut_only_delimited", validate_cut_only_delimited},
+    {"sort_check", validate_sort_check},
+    {"sort_ignore_case", validate_sort_ignore_case},
+    {"sort_by_field", validate_sort_by_field},
+    {"sort_month", validate_sort_month},
+    {"sort_numeric", validate_sort_numeric},
+    {"sort_output", validate_sort_output},
+    {"sort_reverse", validate_sort_reverse},
+    {"sort_combined", validate_sort_combined},
     {NULL, NULL}
 };
 

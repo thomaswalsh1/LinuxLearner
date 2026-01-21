@@ -22,4 +22,14 @@ int validate_cut_delimiter(void);
 int validate_cut_fields(void);
 int validate_cut_only_delimited(void);
 
+// Sort validators
+int validate_sort_check(void);
+int validate_sort_ignore_case(void);
+int validate_sort_by_field(void);
+int validate_sort_month(void);
+int validate_sort_numeric(void);
+int validate_sort_output(void);
+int validate_sort_reverse(void);
+int validate_sort_combined(void);
+
 #endif
