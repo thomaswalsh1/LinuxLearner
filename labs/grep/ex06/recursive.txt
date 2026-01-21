@@ -1,3 +1,0 @@
-logs/subdir/log3.txt:error: log3 failed
-logs/log2.txt:error: log2 failed
-logs/log1.txt:error: log1 failed
