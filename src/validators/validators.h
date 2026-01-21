@@ -39,4 +39,12 @@ int validate_wc_words(void);
 int validate_wc_chars(void);
 int validate_wc_max_line_length(void);
 
+// Cat validators
+int validate_cat_show_all(void);
+int validate_cat_show_ends(void);
+int validate_cat_number(void);
+int validate_cat_squeeze_blank(void);
+int validate_cat_show_tabs(void);
+int validate_cat_show_nonprinting(void);
+
 #endif

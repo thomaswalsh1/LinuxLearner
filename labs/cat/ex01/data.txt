@@ -1,0 +1,6 @@
+First line with special	chars
+Second line
+Third line
+
+
+Fourth line with spaces   

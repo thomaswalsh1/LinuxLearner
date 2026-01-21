@@ -43,6 +43,12 @@ static ValidatorEntry validator_registry[] = {
     {"wc_words", validate_wc_words},
     {"wc_chars", validate_wc_chars},
     {"wc_max_line_length", validate_wc_max_line_length},
+    {"cat_show_all", validate_cat_show_all},
+    {"cat_show_ends", validate_cat_show_ends},
+    {"cat_number", validate_cat_number},
+    {"cat_squeeze_blank", validate_cat_squeeze_blank},
+    {"cat_show_tabs", validate_cat_show_tabs},
+    {"cat_show_nonprinting", validate_cat_show_nonprinting},
     {NULL, NULL}
 };
 
