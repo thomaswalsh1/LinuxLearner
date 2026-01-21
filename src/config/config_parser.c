@@ -52,6 +52,9 @@ static ValidatorEntry validator_registry[] = {
     {"sed_expression", validate_sed_expression},
     {"sed_file", validate_sed_file},
     {"sed_extended_regex", validate_sed_extended_regex},
+    {"awk_field_separator", validate_awk_field_separator},
+    {"awk_file", validate_awk_file},
+    {"awk_sandbox", validate_awk_sandbox},
     {NULL, NULL}
 };
 

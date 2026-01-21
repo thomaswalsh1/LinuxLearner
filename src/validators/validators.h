@@ -52,4 +52,9 @@ int validate_sed_expression(void);
 int validate_sed_file(void);
 int validate_sed_extended_regex(void);
 
+// Awk validators
+int validate_awk_field_separator(void);
+int validate_awk_file(void);
+int validate_awk_sandbox(void);
+
 #endif
