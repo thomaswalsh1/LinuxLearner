@@ -2,10 +2,17 @@
 #ifndef SCREENS_H
 #define SCREENS_H
 
+#include "exercises.h"
+
 /**
  * UI helper function that displays the success page
  */
 void show_success(void);
+
+/**
+ * UI helper function that displays the instructions for an assignment
+ */
+void show_instructions(const Exercise *ex);
 
 /**
  * UI helper function that displays the failure page

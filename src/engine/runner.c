@@ -1,5 +1,6 @@
 #include "runner.h"
 #include "helpers.h"
+#include "screens.h"
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -60,11 +61,7 @@ int run_exercise(const Exercise *ex) {
     }
 
     // write the instructions
-    clear();
-    print_center(stdscr, 2, ex->title);
-    print_center_multiline(stdscr, 4, ex->description);
-    print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
-    refresh();
+    show_instructions(ex);
 
     // track input
     while (1) {
