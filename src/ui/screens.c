@@ -7,9 +7,19 @@
 
 void show_success(void) {
     clear();
-    mvprintw(5, 5, "Success!");
-    mvprintw(7, 5, "You completed the exercise correctly.");
-    mvprintw(9, 5, "Press any key to continue.");
+    print_left_auto(stdscr, 5, "Success!");
+    print_left_auto(stdscr, 7, "You completed the exercise correctly.");
+    print_left_auto(stdscr, 9, "Press any key to continue.");
+    refresh();
+}
+
+void show_failure(const char *hint) {
+    clear();
+    print_left_auto(stdscr, 5, "Not quite.");
+    char hint_str[50] = "Hint: ";
+    strcat(hint_str, hint);
+    print_left_auto(stdscr, 7, hint_str);
+    print_left_auto(stdscr, 9, "Press any key to retry.");
     refresh();
 }
 
@@ -18,14 +28,6 @@ void show_instructions(const Exercise *ex) {
     print_left_auto(stdscr, 5, ex->title);
     print_left_auto(stdscr, 7, ex->description);
     print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
-    refresh();
-}
-
-void show_failure(const char *hint) {
-    clear();
-    mvprintw(5, 5, "Not quite.");
-    mvprintw(7, 5, "Hint: %s", hint);
-    mvprintw(9, 5, "Press any key to retry.");
     refresh();
 }
 
