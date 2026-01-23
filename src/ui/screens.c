@@ -32,7 +32,15 @@ void show_failure(const char *hint) {
 void show_title(void) {
     clear();
     print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
-    print_center(stdscr, 9, "By Thomas Walsh");
+    print_center_auto(stdscr, 9, "By Thomas Walsh");
     print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit");
+    refresh();
+}
+
+void show_explanation(void) {
+    clear();
+    print_center_auto(stdscr, 2, "How this works:");
+    print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
+    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs");
     refresh();
 }

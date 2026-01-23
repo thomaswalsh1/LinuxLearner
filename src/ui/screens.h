@@ -21,4 +21,6 @@ void show_failure(const char *hint);
 
 void show_title(void);
 
+void show_explanation(void);
+
 #endif
