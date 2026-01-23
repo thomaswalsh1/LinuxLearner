@@ -66,6 +66,9 @@ int run_exercise(const Exercise *ex) {
     // track input
     while (1) {
         ch = getch();
+        if (ch == KEY_RESIZE) {
+            show_instructions(ex);
+        }
         if (ch == 's' || ch == 'S') launch_shell();
         if (ch == 27) return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;

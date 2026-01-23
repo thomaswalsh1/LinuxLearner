@@ -15,8 +15,8 @@ void show_success(void) {
 
 void show_instructions(const Exercise *ex) {
     clear();
-    mvprintw(5, 5, "%s", ex->title);
-    mvprintw(7, 5, "%s", ex->description);
+    print_left_auto(stdscr, 5, ex->title);
+    print_left_auto(stdscr, 7, ex->description);
     print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
     refresh();
 }
