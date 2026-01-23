@@ -118,7 +118,12 @@ int run_explanation(void) {
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
         if (ch == 'r' || ch == 'R') {
             reset_all_output_files();
-            return ACTION_EXIT;
+            int secondary_action = show_outputs_reset();
+            if (secondary_action == ACTION_CONTINUE) {
+                show_explanation();
+            } else { // exit
+                return ACTION_EXIT;
+            }
         }
     }
 }

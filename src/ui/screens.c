@@ -71,3 +71,22 @@ void show_explanation(void) {
     print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs");
     refresh();
 }
+
+int show_outputs_reset(void) {
+    while (1) {
+        clear();
+        print_left_auto(stdscr, 5, "All output files have been reset.");
+        print_left_auto(stdscr, 7, "You can now go through all of the exercises again.");
+        print_bottomleft(stdscr, 0, "ENTER when done, ESC to quit");
+        refresh();
+
+        int ch = getch();
+        if (ch == KEY_RESIZE) {
+            continue; // redraw on resize
+        }
+        if (ch == 27) { // ESC
+            return ACTION_EXIT;
+        }
+        return ACTION_CONTINUE;
+    }
+}

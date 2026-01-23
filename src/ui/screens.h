@@ -23,4 +23,6 @@ void show_title(void);
 
 void show_explanation(void);
 
+int show_outputs_reset(void);
+
 #endif
