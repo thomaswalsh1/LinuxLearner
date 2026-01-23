@@ -28,13 +28,14 @@ int show_success(void) {
 }
 
 int show_failure(const char *hint) {
+    int show_hint = 0;
     while(1) {
         clear();
         print_left_auto(stdscr, 5, "Not quite.");
         char hint_str[256] = "Hint: ";
         strcat(hint_str, hint);
-        print_left_auto(stdscr, 7, hint_str);
-        print_left_auto(stdscr, 9, "Press ENTER to retry or ESC to quit.");
+        if (show_hint) print_left_auto(stdscr, 7, hint_str);
+        print_left_auto(stdscr, 9, "Press ENTER to retry, ESC to quit, or H for a hint.");
         refresh();
         
         int ch = getch();
@@ -43,6 +44,10 @@ int show_failure(const char *hint) {
         }
         if (ch == 27) { // ESC
             return ACTION_EXIT;
+        }
+        if (ch == 'h' || ch == 'H') {
+            show_hint = 1;
+            continue;
         }
         return ACTION_RETRY;
     }
