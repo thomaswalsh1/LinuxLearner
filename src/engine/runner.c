@@ -80,9 +80,9 @@ void launch_shell(void) {
     endwin(); // close out
 
     // introduce the shell to the user
+    system("clear");
     printf("\n--- LAB SHELL ---\n");
     printf("Type your commands. Type 'exit' to return.\n\n");
-    system("clear");
     system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
 
     reset_prog_mode();
