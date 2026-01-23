@@ -28,19 +28,24 @@ int show_success(void) {
 }
 
 int show_failure(const char *hint) {
-    clear();
-    print_center_auto(stdscr, 5, "Not quite.");
-    char hint_str[256] = "Hint: ";
-    strcat(hint_str, hint);
-    print_center_auto(stdscr, 7, hint_str);
-    print_center_auto(stdscr, 9, "Press SPACE to retry or ESC to quit.");
-    refresh();
-    
-    int ch = getch();
-    if (ch == 27) { // ESC
-        return ACTION_EXIT;
+    while(1) {
+        clear();
+        print_left_auto(stdscr, 5, "Not quite.");
+        char hint_str[256] = "Hint: ";
+        strcat(hint_str, hint);
+        print_left_auto(stdscr, 7, hint_str);
+        print_left_auto(stdscr, 9, "Press ENTER to retry or ESC to quit.");
+        refresh();
+        
+        int ch = getch();
+        if (ch == KEY_RESIZE) {
+            continue; // redraw on resize
+        }
+        if (ch == 27) { // ESC
+            return ACTION_EXIT;
+        }
+        return ACTION_RETRY;
     }
-    return ACTION_RETRY;
 }
 
 void show_instructions(const Exercise *ex) {
