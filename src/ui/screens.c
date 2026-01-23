@@ -28,3 +28,11 @@ void show_failure(const char *hint) {
     mvprintw(9, 5, "Press any key to retry.");
     refresh();
 }
+
+void show_title(void) {
+    clear();
+    print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
+    print_center(stdscr, 9, "By Thomas Walsh");
+    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit");
+    refresh();
+}

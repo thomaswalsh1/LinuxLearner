@@ -19,5 +19,6 @@ void show_instructions(const Exercise *ex);
  */
 void show_failure(const char *hint);
 
+void show_title(void);
 
 #endif

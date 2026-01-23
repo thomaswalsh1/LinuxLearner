@@ -88,14 +88,13 @@ void launch_shell(void) {
 int run_title(void) {
     int ch;
     // first menu, name and title
-    clear();
-    print_center(stdscr, 2, "CompTIA Linux+ text and file exercises");
-    print_center_multiline(stdscr, 4, "By Thomas Walsh");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit");
-    refresh();
+    show_title();
 
     while (1) {
         ch = getch();
+        if (ch == KEY_RESIZE) { // handle resizing
+            show_title();
+        }
         if (ch == 27) return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
     }
