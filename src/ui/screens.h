@@ -7,7 +7,7 @@
 /**
  * UI helper function that displays the success page
  */
-void show_success(void);
+int show_success(void);
 
 /**
  * UI helper function that displays the instructions for an assignment
@@ -17,7 +17,7 @@ void show_instructions(const Exercise *ex);
 /**
  * UI helper function that displays the failure page
  */
-void show_failure(const char *hint);
+int show_failure(const char *hint);
 
 void show_title(void);
 
