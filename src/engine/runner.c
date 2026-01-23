@@ -1,5 +1,6 @@
 #include "runner.h"
 #include "helpers.h"
+#include "screens.h"
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -60,15 +61,14 @@ int run_exercise(const Exercise *ex) {
     }
 
     // write the instructions
-    clear();
-    print_center(stdscr, 2, ex->title);
-    print_center_multiline(stdscr, 4, ex->description);
-    print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
-    refresh();
+    show_instructions(ex);
 
     // track input
     while (1) {
         ch = getch();
+        if (ch == KEY_RESIZE) {
+            show_instructions(ex);
+        }
         if (ch == 's' || ch == 'S') launch_shell();
         if (ch == 27) return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
@@ -91,14 +91,13 @@ void launch_shell(void) {
 int run_title(void) {
     int ch;
     // first menu, name and title
-    clear();
-    print_center(stdscr, 2, "CompTIA Linux+ text and file exercises");
-    print_center_multiline(stdscr, 4, "By Thomas Walsh");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit");
-    refresh();
+    show_title();
 
     while (1) {
         ch = getch();
+        if (ch == KEY_RESIZE) { // handle resizing
+            show_title();
+        }
         if (ch == 27) return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
     }
@@ -107,14 +106,13 @@ int run_title(void) {
 int run_explanation(void) {
     int ch;
     // explanation menu
-    clear();
-    print_center(stdscr, 2, "How this works:");
-    print_center_multiline(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs");
-    refresh();
+    show_explanation();
 
     while (1) {
         ch = getch();
+        if (ch == KEY_RESIZE) {
+            show_explanation();
+        }
         if (ch == 27) return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
         if (ch == 'r' || ch == 'R') {

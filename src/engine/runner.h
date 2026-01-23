@@ -5,6 +5,7 @@
 
 #define ACTION_EXIT 0
 #define ACTION_CONTINUE 1
+#define ACTION_RETRY 2
 
 // Global variable for the project root
 extern char project_root[512];

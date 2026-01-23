@@ -7,6 +7,136 @@ void print_center(WINDOW *win, int y, const char *text) {
     mvwprintw(win, y, x, "%s", text);
 }
 
+void print_center_auto(WINDOW *win, int start_y, const char *text) {
+    int max_width = COLS - 4;   // margins
+    int y = start_y;
+
+    char line[1024] = "";
+    int line_len = 0;
+
+    const char *p = text;
+
+    while (*p) {
+        // Skip spaces
+        while (*p == ' ') p++;
+
+        // Extract a word
+        char word[256];
+        int wlen = 0;
+        while (*p && *p != ' ') {
+            word[wlen++] = *p++;
+        }
+        word[wlen] = '\0';
+
+        if (wlen == 0)
+            break;
+
+        // If word won't fit on the current line, print line first
+        if (line_len > 0 && line_len + 1 + wlen > max_width) {
+            print_center(win, y++, line);
+            line[0] = '\0';
+            line_len = 0;
+        }
+
+        // If word is longer than max width, force-break it
+        if (wlen > max_width) {
+            if (line_len > 0) {
+                print_center(win, y++, line);
+                line[0] = '\0';
+                line_len = 0;
+            }
+
+            for (int i = 0; i < wlen; i += max_width) {
+                char chunk[256];
+                int len = (wlen - i > max_width) ? max_width : wlen - i;
+                strncpy(chunk, word + i, len);
+                chunk[len] = '\0';
+                print_center(win, y++, chunk);
+            }
+            continue;
+        }
+
+        // Append word to line
+        if (line_len > 0) {
+            strcat(line, " ");
+            line_len++;
+        }
+        strcat(line, word);
+        line_len += wlen;
+    }
+
+    // Print remaining text
+    if (line_len > 0) {
+        print_center(win, y, line);
+    }
+}
+
+void print_left_auto(WINDOW *win, int start_y, const char *text) {
+    int margin = 2;
+    int max_width = COLS - (margin * 2);
+    int y = start_y;
+
+    char line[1024] = "";
+    int line_len = 0;
+
+    const char *p = text;
+
+    while (*p) {
+        // Skip spaces
+        while (*p == ' ') p++;
+
+        // Extract word
+        char word[256];
+        int wlen = 0;
+        while (*p && *p != ' ') {
+            word[wlen++] = *p++;
+        }
+        word[wlen] = '\0';
+
+        if (wlen == 0)
+            break;
+
+        // If word doesn't fit on current line, print line
+        if (line_len > 0 && line_len + 1 + wlen > max_width) {
+            mvwprintw(win, y++, margin, "%s", line);
+            line[0] = '\0';
+            line_len = 0;
+        }
+
+        // Force-break very long words
+        if (wlen > max_width) {
+            if (line_len > 0) {
+                mvwprintw(win, y++, margin, "%s", line);
+                line[0] = '\0';
+                line_len = 0;
+            }
+
+            for (int i = 0; i < wlen; i += max_width) {
+                char chunk[256];
+                int len = (wlen - i > max_width) ? max_width : wlen - i;
+                strncpy(chunk, word + i, len);
+                chunk[len] = '\0';
+                mvwprintw(win, y++, margin, "%s", chunk);
+            }
+            continue;
+        }
+
+        // Append word
+        if (line_len > 0) {
+            strcat(line, " ");
+            line_len++;
+        }
+        strcat(line, word);
+        line_len += wlen;
+    }
+
+    // Print leftover
+    if (line_len > 0) {
+        mvwprintw(win, y, margin, "%s", line);
+    }
+}
+
+
 void print_center_multiline(WINDOW *win, int start_y, const char *text) {
     // Split text on \n and call print_center for each line
     int y = start_y;

@@ -51,7 +51,6 @@ int main(void) {
             i--; // retry same exercise
         }
 
-        getch(); // wait before next exercise
     }
 
     free_exercise_list(exercise_list);
