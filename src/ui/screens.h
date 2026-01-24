@@ -23,6 +23,8 @@ void show_title(void);
 
 void show_explanation(void);
 
+void show_exercise_selection(void);
+
 int show_outputs_reset(void);
 
 #endif

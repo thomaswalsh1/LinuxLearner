@@ -73,7 +73,7 @@ void show_explanation(void) {
     clear();
     print_center_auto(stdscr, 2, "How this works:");
     print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs");
+    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs, M for exercise selection menu");
     refresh();
 }
 
