@@ -37,4 +37,6 @@ void launch_shell(void);
 
 int run_exercise_menu(void);
 
+int run_exercise_list(void);
+
 #endif

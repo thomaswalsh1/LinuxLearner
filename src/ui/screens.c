@@ -120,10 +120,19 @@ int show_outputs_reset(void)
 
 void show_exercise_menu(void)
 {
-    const enum Option options[] = {VIEW_EXERCISES, RETURN_INSTRUCTIONS, OPTIONS_END};
+    const enum Option options[] = {RETURN_INSTRUCTIONS, VIEW_EXERCISES, OPTIONS_END};
     clear();
     print_left_auto(stdscr, 5, "This is the exercise menu.");
     print_left_auto(stdscr, 7, "Here, you can jump to an exercise by viewing the exercise list.");
+    print_options(stdscr, options);
+    refresh();
+}
+
+void show_exercise_list(void) {
+    const enum Option options[] = {RETURN_MENU, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 5, "This is the exercise list.");
+    print_left_auto(stdscr, 7, "Use WASD or the arrow keys to navigate through the exercises.");
     print_options(stdscr, options);
     refresh();
 }

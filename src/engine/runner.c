@@ -147,5 +147,22 @@ int run_exercise_menu(void) {
         if (ch == 127 || ch == KEY_BACKSPACE) {
             return ACTION_EXIT;
         }
+        if (ch == 'v' || ch == 'V') {
+            int list_action = run_exercise_list();
+            if (list_action == ACTION_EXIT) {
+                show_exercise_menu();
+            }
+        }
+    }
+}
+
+int run_exercise_list(void) {
+    int ch;
+    show_exercise_list();
+    while(1) {
+        ch = getch();
+        if (ch == 127 || ch == KEY_BACKSPACE) {
+            return ACTION_EXIT;
+        }
     }
 }
