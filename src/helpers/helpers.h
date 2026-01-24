@@ -19,8 +19,20 @@ void print_bottomleft(WINDOW *win, int y, const char *text);
 void print_bottomright(WINDOW *win, int y, const char *text);
 
 // print input options
-enum Option {
-    SHELL, EXIT, CONTINUE, VIEW_EXERCISES, VALIDATE, MENU, RETURN_INSTRUCTIONS, RETURN_MENU, RESET_ALL, OPTIONS_END 
+enum Option
+{
+    SHELL,
+    EXIT,
+    CONTINUE,
+    VIEW_EXERCISES,
+    VALIDATE,
+    MENU,
+    RETURN_INSTRUCTIONS,
+    RETURN_MENU,
+    RESET_ALL,
+    GENERATE_RANDOM,
+    SELECT_EXERCISE,
+    OPTIONS_END
 };
 void print_options(WINDOW *win, const enum Option options[]);
 

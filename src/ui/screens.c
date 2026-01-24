@@ -123,17 +123,22 @@ void show_exercise_menu(void)
     const enum Option options[] = {RETURN_INSTRUCTIONS, VIEW_EXERCISES, OPTIONS_END};
     clear();
     print_left_auto(stdscr, 5, "This is the exercise menu.");
-    print_left_auto(stdscr, 7, "Here, you can jump to an exercise by viewing the exercise list.");
+    print_left_auto(stdscr, 7, "Here you can jump to an exercise by viewing the exercise list.");
     print_options(stdscr, options);
     refresh();
 }
 
 void show_exercise_list(void) {
-    const enum Option options[] = {RETURN_MENU, OPTIONS_END};
+    const enum Option options[] = {RETURN_MENU, GENERATE_RANDOM, SELECT_EXERCISE, OPTIONS_END};
+
+    int top_window_border = 3;
+    int bottom_window_border = LINES - 5;
+
     clear();
     print_left_auto(stdscr, 1, "This is the exercise list.");
     print_left_auto(stdscr, 2, "Use WASD or the arrow keys to navigate through the exercises.");
-    print_border_line(stdscr, 3);
+    print_border_line(stdscr, top_window_border);
+    print_border_line(stdscr, bottom_window_border);
     print_options(stdscr, options);
     refresh();
 }

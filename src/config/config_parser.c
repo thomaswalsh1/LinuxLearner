@@ -145,7 +145,7 @@ static Exercise parse_conf_file(const char *filepath) {
         ex.validate = get_validator_function(validator_name);
         free(validator_name);
     }
-    
+    ex.is_enabled = 1; // enabled by default;
     return ex;
 }
 
