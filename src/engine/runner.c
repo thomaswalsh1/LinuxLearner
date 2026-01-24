@@ -80,8 +80,10 @@ void launch_shell(void) {
     endwin(); // close out
 
     // introduce the shell to the user
+    system("clear");
     printf("\n--- LAB SHELL ---\n");
     printf("Type your commands. Type 'exit' to return.\n\n");
+    printf("If the command doesn't respond, use ctrl + c to stop it and try again.\n\n");
     system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
 
     reset_prog_mode();
@@ -117,7 +119,12 @@ int run_explanation(void) {
         if (ch == '\n' || ch == KEY_ENTER) return ACTION_CONTINUE;
         if (ch == 'r' || ch == 'R') {
             reset_all_output_files();
-            return ACTION_EXIT;
+            int secondary_action = show_outputs_reset();
+            if (secondary_action == ACTION_CONTINUE) {
+                show_explanation();
+            } else { // exit
+                return ACTION_EXIT;
+            }
         }
     }
 }
