@@ -126,5 +126,26 @@ int run_explanation(void) {
                 return ACTION_EXIT;
             }
         }
+        if (ch == 'm' || ch == 'M') {
+            int menu_action = run_exercise_menu();
+            if (menu_action == ACTION_EXIT) {
+                show_explanation();
+            }
+            continue;
+        }
+    }
+}
+
+int run_exercise_menu(void) {
+    int ch;
+    show_exercise_menu();
+    while(1) {
+        ch = getch();
+        if (ch == KEY_RESIZE) {
+            show_exercise_menu();
+        }
+        if (ch == 127 || ch == KEY_BACKSPACE) {
+            return ACTION_EXIT;
+        }
     }
 }

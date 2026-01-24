@@ -27,4 +27,6 @@ void show_exercise_selection(void);
 
 int show_outputs_reset(void);
 
+void show_exercise_menu(void);
+
 #endif

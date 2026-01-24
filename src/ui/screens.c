@@ -8,8 +8,10 @@
 #include <stdlib.h>
 #include <errno.h>
 
-int show_success(void) {
-    while(1) {
+int show_success(void)
+{
+    while (1)
+    {
         clear();
         print_left_auto(stdscr, 5, "Success!");
         print_left_auto(stdscr, 7, "You completed the exercise correctly.");
@@ -18,36 +20,44 @@ int show_success(void) {
         refresh();
 
         int ch = getch();
-        if (ch == KEY_RESIZE) {
+        if (ch == KEY_RESIZE)
+        {
             continue; // redraw on resize
-        } else if (ch == 27) { // ESC
+        }
+        else if (ch == 27)
+        { // ESC
             return ACTION_EXIT;
         }
         return ACTION_CONTINUE;
-
     }
 }
 
-int show_failure(const char *hint) {
+int show_failure(const char *hint)
+{
     int show_hint = 0;
-    while(1) {
+    while (1)
+    {
         clear();
         print_left_auto(stdscr, 5, "Not quite.");
         char hint_str[256] = "Hint: ";
         strcat(hint_str, hint);
-        if (show_hint) print_left_auto(stdscr, 7, hint_str);
+        if (show_hint)
+            print_left_auto(stdscr, 7, hint_str);
         print_left_auto(stdscr, 9, "Press ENTER to retry, ESC to quit, or H for a hint.");
         return_cursor(stdscr);
         refresh();
-        
+
         int ch = getch();
-        if (ch == KEY_RESIZE) {
+        if (ch == KEY_RESIZE)
+        {
             continue; // redraw on resize
         }
-        if (ch == 27) { // ESC
+        if (ch == 27)
+        { // ESC
             return ACTION_EXIT;
         }
-        if (ch == 'h' || ch == 'H') {
+        if (ch == 'h' || ch == 'H')
+        {
             show_hint = 1;
             continue;
         }
@@ -55,7 +65,8 @@ int show_failure(const char *hint) {
     }
 }
 
-void show_instructions(const Exercise *ex) {
+void show_instructions(const Exercise *ex)
+{
     const enum Option options[] = {EXIT, VALIDATE, SHELL, OPTIONS_END};
     clear();
     print_left_auto(stdscr, 5, ex->title);
@@ -64,7 +75,8 @@ void show_instructions(const Exercise *ex) {
     refresh();
 }
 
-void show_title(void) {
+void show_title(void)
+{
     const enum Option options[] = {EXIT, CONTINUE, OPTIONS_END};
     clear();
     print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
@@ -73,7 +85,8 @@ void show_title(void) {
     refresh();
 }
 
-void show_explanation(void) {
+void show_explanation(void)
+{
     const enum Option options[] = {RESET_ALL, MENU, EXIT, CONTINUE, OPTIONS_END};
     clear();
     print_center_auto(stdscr, 2, "How this works:");
@@ -82,8 +95,10 @@ void show_explanation(void) {
     refresh();
 }
 
-int show_outputs_reset(void) {
-    while (1) {
+int show_outputs_reset(void)
+{
+    while (1)
+    {
         clear();
         print_left_auto(stdscr, 5, "All output files have been reset.");
         print_left_auto(stdscr, 7, "You can now go through all of the exercises again.");
@@ -91,12 +106,24 @@ int show_outputs_reset(void) {
         refresh();
 
         int ch = getch();
-        if (ch == KEY_RESIZE) {
+        if (ch == KEY_RESIZE)
+        {
             continue; // redraw on resize
         }
-        if (ch == 27) { // ESC
+        if (ch == 27)
+        { // ESC
             return ACTION_EXIT;
         }
         return ACTION_CONTINUE;
     }
+}
+
+void show_exercise_menu(void)
+{
+    const enum Option options[] = {VIEW_EXERCISES, RETURN_INSTRUCTIONS, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 5, "This is the exercise menu.");
+    print_left_auto(stdscr, 7, "Here, you can jump to an exercise by viewing the exercise list.");
+    print_options(stdscr, options);
+    refresh();
 }

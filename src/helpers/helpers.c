@@ -186,6 +186,9 @@ void print_options(WINDOW *win, const enum Option options[]) {
             case CONTINUE:   text = "Press ENTER to continue"; break;
             case RESET_ALL:  text = "Press R to reset all"; break;
             case VALIDATE:  text = "Press ENTER to test your solution"; break;
+            case RETURN_INSTRUCTIONS:  text = "press BACKSPACE to return to instructions"; break;
+            case RETURN_MENU:  text = "press BACKSPACE to return to the menu"; break;
+            case VIEW_EXERCISES:  text = "press V to view exercises"; break;
             case MENU:       text = "Press M for menu"; break;
             default: break;
         }

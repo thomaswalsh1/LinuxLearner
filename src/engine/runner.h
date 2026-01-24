@@ -35,4 +35,6 @@ int run_explanation(void);
  */
 void launch_shell(void);
 
+int run_exercise_menu(void);
+
 #endif
