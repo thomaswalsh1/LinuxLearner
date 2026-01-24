@@ -1,3 +1,4 @@
+// helpers.c
 #include "helpers.h"
 #include <string.h>
 #include <stdio.h>
@@ -171,4 +172,29 @@ void print_bottomleft(WINDOW *win, int y, const char *text) {
 void print_bottomright(WINDOW *win, int y, const char *text) {
     int x = COLS - strlen(text) - 1;
     mvwprintw(win, LINES - y - 1, x, "%s", text);
+}
+
+void print_options(WINDOW *win, const enum Option options[]) {
+    int margin = 2;
+    int y = LINES - 2; // always start at the bottom of the screen
+    for (int i = 0; options[i] != OPTIONS_END; i++) {
+        const char *text = "";
+
+        switch (options[i]) {
+            case SHELL:      text = "Press S for shell"; break;
+            case EXIT:       text = "Press ESC to exit"; break;
+            case CONTINUE:   text = "Press ENTER to continue"; break;
+            case RESET_ALL:  text = "Press R to reset all"; break;
+            case VALIDATE:  text = "Press ENTER to test your solution"; break;
+            case MENU:       text = "Press M for menu"; break;
+            default: break;
+        }
+
+        mvwprintw(win, y--, margin, "%s", text);
+    }
+    return_cursor(win);
+}
+
+void return_cursor(WINDOW *win) {
+    wmove(win, LINES - 1, 0);
 }

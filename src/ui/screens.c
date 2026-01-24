@@ -14,6 +14,7 @@ int show_success(void) {
         print_left_auto(stdscr, 5, "Success!");
         print_left_auto(stdscr, 7, "You completed the exercise correctly.");
         print_left_auto(stdscr, 9, "Press any key to continue.");
+        return_cursor(stdscr);
         refresh();
 
         int ch = getch();
@@ -36,6 +37,7 @@ int show_failure(const char *hint) {
         strcat(hint_str, hint);
         if (show_hint) print_left_auto(stdscr, 7, hint_str);
         print_left_auto(stdscr, 9, "Press ENTER to retry, ESC to quit, or H for a hint.");
+        return_cursor(stdscr);
         refresh();
         
         int ch = getch();
@@ -54,26 +56,29 @@ int show_failure(const char *hint) {
 }
 
 void show_instructions(const Exercise *ex) {
+    const enum Option options[] = {EXIT, VALIDATE, SHELL, OPTIONS_END};
     clear();
     print_left_auto(stdscr, 5, ex->title);
     print_left_auto(stdscr, 7, ex->description);
-    print_bottomleft(stdscr, 0, "Press S for shell, ENTER when done, ESC to quit");
+    print_options(stdscr, options);
     refresh();
 }
 
 void show_title(void) {
+    const enum Option options[] = {EXIT, CONTINUE, OPTIONS_END};
     clear();
     print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
     print_center_auto(stdscr, 9, "By Thomas Walsh");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit");
+    print_options(stdscr, options);
     refresh();
 }
 
 void show_explanation(void) {
+    const enum Option options[] = {RESET_ALL, MENU, EXIT, CONTINUE, OPTIONS_END};
     clear();
     print_center_auto(stdscr, 2, "How this works:");
     print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
-    print_bottomleft(stdscr, 0, "Press ENTER when done, ESC to quit, R to reset all labs, M for exercise selection menu");
+    print_options(stdscr, options);
     refresh();
 }
 

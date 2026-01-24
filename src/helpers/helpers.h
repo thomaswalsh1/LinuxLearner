@@ -1,3 +1,4 @@
+// helpers.h
 #ifndef HELPERS_H
 #define HELPERS_H
 
@@ -16,5 +17,13 @@ void print_topleft(WINDOW *win, int y, int x, const char *text);
 void print_topright(WINDOW *win, int y, const char *text);
 void print_bottomleft(WINDOW *win, int y, const char *text);
 void print_bottomright(WINDOW *win, int y, const char *text);
+
+// print input options
+enum Option {
+    SHELL, EXIT, CONTINUE, VALIDATE, MENU, RESET_ALL, OPTIONS_END 
+};
+void print_options(WINDOW *win, const enum Option options[]);
+
+void return_cursor(WINDOW *win);
 
 #endif
