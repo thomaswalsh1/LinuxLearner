@@ -29,5 +29,7 @@ int show_outputs_reset(void);
 
 void show_exercise_menu(void);
 
-void show_exercise_list(void);
+void show_exercise_list_commentary(int top_window_border, int bottom_window_border);
+
+void show_exercise_list_contents(Exercise *viewable_exercises, int top_window_border, int bottom_window_border, int selected_index, int top_index, int per_page);
 #endif

@@ -157,13 +157,24 @@ int run_exercise_menu(void) {
 }
 
 int run_exercise_list(void) {
-    
     int ch;
-    show_exercise_list();
+
+    int border_top = 4;
+    int border_bottom = LINES - 5;
+
+    int top_index = 0;
+
+    int possible_exercise_spots = border_bottom - border_top;
+    show_exercise_list_commentary(border_top, border_bottom);
+
+    show_exercise_list_contents(exercises, border_top, border_bottom, 0, 0, possible_exercise_spots);
     while(1) {
         ch = getch();
         if (ch == KEY_RESIZE) {
-            show_exercise_list();
+            border_bottom = LINES - 5;
+            show_exercise_list_commentary(border_top, border_bottom);
+            possible_exercise_spots = border_bottom - border_top;
+            show_exercise_list_contents(exercises, border_top, border_bottom, 0, 0, possible_exercise_spots);
         }
         if (ch == 127 || ch == KEY_BACKSPACE) {
             return ACTION_EXIT;

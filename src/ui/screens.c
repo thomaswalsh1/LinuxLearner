@@ -128,17 +128,34 @@ void show_exercise_menu(void)
     refresh();
 }
 
-void show_exercise_list(void) {
+/**
+ *
+ * The prints in this function will only refresh on size changes, or if an exercise is selected
+ *
+ */
+void show_exercise_list_commentary(int top_window_border, int bottom_window_border)
+{
     const enum Option options[] = {RETURN_MENU, GENERATE_RANDOM, SELECT_EXERCISE, OPTIONS_END};
-
-    int top_window_border = 3;
-    int bottom_window_border = LINES - 5;
 
     clear();
     print_left_auto(stdscr, 1, "This is the exercise list.");
     print_left_auto(stdscr, 2, "Use WASD or the arrow keys to navigate through the exercises.");
     print_border_line(stdscr, top_window_border);
+
+    // this is where the window would be
+
+    // endwindow
+
     print_border_line(stdscr, bottom_window_border);
     print_options(stdscr, options);
     refresh();
+}
+
+void show_exercise_list_contents(Exercise *viewable_exercises, int top_window_border, int bottom_window_border, int selected_index, int top_index, int per_page)
+{
+    int y = top_window_border + 1;
+    for(int i = top_index; i < (top_index + per_page - 1); i++) {
+        const Exercise *ex  = &viewable_exercises[i];
+        mvwprintw(stdscr, y++, 2, "%s", ex->title);
+    }
 }
