@@ -157,10 +157,14 @@ int run_exercise_menu(void) {
 }
 
 int run_exercise_list(void) {
+    
     int ch;
     show_exercise_list();
     while(1) {
         ch = getch();
+        if (ch == KEY_RESIZE) {
+            show_exercise_list();
+        }
         if (ch == 127 || ch == KEY_BACKSPACE) {
             return ACTION_EXIT;
         }

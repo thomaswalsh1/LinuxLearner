@@ -26,4 +26,6 @@ void print_options(WINDOW *win, const enum Option options[]);
 
 void return_cursor(WINDOW *win);
 
+void print_border_line(WINDOW *win, int y);
+
 #endif

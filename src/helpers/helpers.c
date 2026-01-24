@@ -250,6 +250,13 @@ void print_options(WINDOW *win, const enum Option options[])
     return_cursor(win);
 }
 
+void print_border_line(WINDOW *win, int y) {
+    int x = 0;
+    for (int i = 0; i < COLS; i++) {
+        mvwprintw(win, y, x++, "-");
+    }
+}
+
 void return_cursor(WINDOW *win)
 {
     wmove(win, LINES - 1, 0);
