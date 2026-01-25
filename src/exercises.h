@@ -10,6 +10,8 @@ typedef struct {
     int (*validate)(void);
     const char *hint;
     const char *target_file;
+    int is_enabled;
+    int is_completed;
 } Exercise;
 
 // Global exercises array and count

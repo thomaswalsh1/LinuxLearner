@@ -20,6 +20,9 @@ labs_old
 #backups for the labs folder
 labs_backup
 
+#todo notes
+todo.txt
+
 # editor
 .vscode/
 .idea/
