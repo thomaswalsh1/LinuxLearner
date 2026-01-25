@@ -1,6 +1,13 @@
-# Linux Learner
+# Linux Learner 0.1.0
 
-Linux Learner is a software package that creates an environment with folders and files on your Linux machine to practice the commands covered in the CompTIA Linux+ V8 XK0-006 exam.
+Currently in its pre-alpha stage, Linux Learner is a software package that creates an environment with folders and files on your Linux machine to practice the commands covered in the CompTIA Linux+ V8 XK0-006 exam.
+
+### Note:
+
+This version of Linux Learner is missing a heavy amount of features. Linux Learner Alpha (0.2.0) will bring a near-permanent workflow as the basis for all future versions.
+
+The current version is not intended to be installed or downloaded, as this repository currently only serves to showcase the development process.
+
 
 ## Instalation
 
