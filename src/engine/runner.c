@@ -227,11 +227,19 @@ int run_exercise_list(void)
         {
             return ACTION_EXIT;
         }
+
         if (ch == KEY_UP || ch == 'w' || ch == 'W')
         {
             if (currently_selected_index > 0)
             {
                 currently_selected_index--;
+
+                // scroll up if needed
+                if (currently_selected_index < top_index)
+                {
+                    top_index--;
+                }
+
                 show_exercise_list_contents(
                     exercises,
                     border_top,
@@ -247,6 +255,13 @@ int run_exercise_list(void)
             if (currently_selected_index < exercise_count - 1)
             {
                 currently_selected_index++;
+
+                // scroll down if needed
+                if (currently_selected_index >= top_index + possible_exercise_spots)
+                {
+                    top_index++;
+                }
+
                 show_exercise_list_contents(
                     exercises,
                     border_top,

@@ -175,7 +175,6 @@ void show_exercise_list_contents(
         mvwprintw(stdscr, y, 2, "%s", viewable_exercises[i].title);
         mvwprintw(stdscr, y, 40, "%s", viewable_exercises[i].lab_dir);
         mvwprintw(stdscr, y, 60, "%s", viewable_exercises[i].is_enabled ? "on" : "off");
-
         y++;
     }
     return_cursor(stdscr);
