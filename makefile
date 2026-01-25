@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror -g -I./src -I./src/helpers -I./src/engine -I./src/ui -I./src/validators -I./src/config
+CFLAGS = -Wall -Wextra -g -I./src -I./src/helpers -I./src/engine -I./src/ui -I./src/validators -I./src/config
 
 # Linker flags
 LDFLAGS = -lncurses

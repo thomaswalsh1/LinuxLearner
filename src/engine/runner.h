@@ -39,4 +39,6 @@ int run_exercise_menu(void);
 
 int run_exercise_list(void);
 
+int run_exercise_selected_menu(Exercise *ex);
+
 #endif

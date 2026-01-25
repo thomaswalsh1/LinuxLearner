@@ -180,3 +180,22 @@ void show_exercise_list_contents(
     return_cursor(stdscr);
     refresh();
 }
+
+void show_exercise_selected_menu(Exercise *ex) {
+    const enum Option options[] = {RETURN_MENU, ABLE_EXERCISE, OPTIONS_END};
+
+    clear();
+    char description_line[256];
+    char enabled_line[256];
+    char directory_line[256];
+    snprintf(description_line, sizeof(description_line), "Description: %s", ex->description);
+    snprintf(enabled_line, sizeof(enabled_line), "Enabled: %s", ex->is_enabled? "On" : "Off");
+    snprintf(directory_line, sizeof(directory_line), "Dirrectory: %s", ex->lab_dir);
+    print_left_auto(stdscr, 5, ex->title);
+    print_left_auto(stdscr, 7, description_line);
+    print_left_auto(stdscr, 9, enabled_line);
+    print_left_auto(stdscr, 11, directory_line);
+    print_options(stdscr, options);
+
+    refresh();
+}

@@ -227,7 +227,6 @@ int run_exercise_list(void)
         {
             return ACTION_EXIT;
         }
-
         if (ch == KEY_UP || ch == 'w' || ch == 'W')
         {
             if (currently_selected_index > 0)
@@ -249,7 +248,6 @@ int run_exercise_list(void)
                     possible_exercise_spots);
             }
         }
-
         if (ch == KEY_DOWN || ch == 's' || ch == 'S')
         {
             if (currently_selected_index < exercise_count - 1)
@@ -257,7 +255,7 @@ int run_exercise_list(void)
                 currently_selected_index++;
 
                 // scroll down if needed
-                if (currently_selected_index >= top_index + possible_exercise_spots)
+                if (currently_selected_index >= top_index + possible_exercise_spots - 1)
                 {
                     top_index++;
                 }
@@ -270,6 +268,44 @@ int run_exercise_list(void)
                     top_index,
                     possible_exercise_spots);
             }
+        }
+        if (ch == '\n' || ch == KEY_ENTER)
+        {
+            int exercise_specific_action = run_exercise_selected_menu(&exercises[currently_selected_index]);
+            if (exercise_specific_action == ACTION_EXIT)
+            {
+                show_exercise_list_commentary(border_top, border_bottom);
+                show_exercise_list_contents(
+                    exercises,
+                    border_top,
+                    border_bottom,
+                    currently_selected_index,
+                    top_index,
+                    possible_exercise_spots);
+            }
+        }
+    }
+}
+
+int run_exercise_selected_menu(Exercise *ex)
+{
+    int ch;
+    show_exercise_selected_menu(ex);
+    while (1)
+    {
+        ch = getch();
+        if (ch == KEY_RESIZE)
+        {
+            show_exercise_selected_menu(ex);
+        }
+        if (ch == KEY_BACKSPACE || ch == 127)
+        {
+            return ACTION_EXIT;
+        }
+        if (ch == 'E' || ch == 'e') {
+            int current_exercise_status = ex->is_enabled;
+            ex->is_enabled = 1-current_exercise_status;
+            show_exercise_selected_menu(ex);
         }
     }
 }
