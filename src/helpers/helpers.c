@@ -1,14 +1,17 @@
+// helpers.c
 #include "helpers.h"
 #include <string.h>
 #include <stdio.h>
 
-void print_center(WINDOW *win, int y, const char *text) {
+void print_center(WINDOW *win, int y, const char *text)
+{
     int x = (COLS - strlen(text)) / 2;
     mvwprintw(win, y, x, "%s", text);
 }
 
-void print_center_auto(WINDOW *win, int start_y, const char *text) {
-    int max_width = COLS - 4;   // margins
+void print_center_auto(WINDOW *win, int start_y, const char *text)
+{
+    int max_width = COLS - 4; // margins
     int y = start_y;
 
     char line[1024] = "";
@@ -16,14 +19,17 @@ void print_center_auto(WINDOW *win, int start_y, const char *text) {
 
     const char *p = text;
 
-    while (*p) {
+    while (*p)
+    {
         // Skip spaces
-        while (*p == ' ') p++;
+        while (*p == ' ')
+            p++;
 
         // Extract a word
         char word[256];
         int wlen = 0;
-        while (*p && *p != ' ') {
+        while (*p && *p != ' ')
+        {
             word[wlen++] = *p++;
         }
         word[wlen] = '\0';
@@ -32,21 +38,25 @@ void print_center_auto(WINDOW *win, int start_y, const char *text) {
             break;
 
         // If word won't fit on the current line, print line first
-        if (line_len > 0 && line_len + 1 + wlen > max_width) {
+        if (line_len > 0 && line_len + 1 + wlen > max_width)
+        {
             print_center(win, y++, line);
             line[0] = '\0';
             line_len = 0;
         }
 
         // If word is longer than max width, force-break it
-        if (wlen > max_width) {
-            if (line_len > 0) {
+        if (wlen > max_width)
+        {
+            if (line_len > 0)
+            {
                 print_center(win, y++, line);
                 line[0] = '\0';
                 line_len = 0;
             }
 
-            for (int i = 0; i < wlen; i += max_width) {
+            for (int i = 0; i < wlen; i += max_width)
+            {
                 char chunk[256];
                 int len = (wlen - i > max_width) ? max_width : wlen - i;
                 strncpy(chunk, word + i, len);
@@ -57,7 +67,8 @@ void print_center_auto(WINDOW *win, int start_y, const char *text) {
         }
 
         // Append word to line
-        if (line_len > 0) {
+        if (line_len > 0)
+        {
             strcat(line, " ");
             line_len++;
         }
@@ -66,12 +77,14 @@ void print_center_auto(WINDOW *win, int start_y, const char *text) {
     }
 
     // Print remaining text
-    if (line_len > 0) {
+    if (line_len > 0)
+    {
         print_center(win, y, line);
     }
 }
 
-void print_left_auto(WINDOW *win, int start_y, const char *text) {
+void print_left_auto(WINDOW *win, int start_y, const char *text)
+{
     int margin = 2;
     int max_width = COLS - (margin * 2);
     int y = start_y;
@@ -81,14 +94,17 @@ void print_left_auto(WINDOW *win, int start_y, const char *text) {
 
     const char *p = text;
 
-    while (*p) {
+    while (*p)
+    {
         // Skip spaces
-        while (*p == ' ') p++;
+        while (*p == ' ')
+            p++;
 
         // Extract word
         char word[256];
         int wlen = 0;
-        while (*p && *p != ' ') {
+        while (*p && *p != ' ')
+        {
             word[wlen++] = *p++;
         }
         word[wlen] = '\0';
@@ -97,21 +113,25 @@ void print_left_auto(WINDOW *win, int start_y, const char *text) {
             break;
 
         // If word doesn't fit on current line, print line
-        if (line_len > 0 && line_len + 1 + wlen > max_width) {
+        if (line_len > 0 && line_len + 1 + wlen > max_width)
+        {
             mvwprintw(win, y++, margin, "%s", line);
             line[0] = '\0';
             line_len = 0;
         }
 
         // Force-break very long words
-        if (wlen > max_width) {
-            if (line_len > 0) {
+        if (wlen > max_width)
+        {
+            if (line_len > 0)
+            {
                 mvwprintw(win, y++, margin, "%s", line);
                 line[0] = '\0';
                 line_len = 0;
             }
 
-            for (int i = 0; i < wlen; i += max_width) {
+            for (int i = 0; i < wlen; i += max_width)
+            {
                 char chunk[256];
                 int len = (wlen - i > max_width) ? max_width : wlen - i;
                 strncpy(chunk, word + i, len);
@@ -122,7 +142,8 @@ void print_left_auto(WINDOW *win, int start_y, const char *text) {
         }
 
         // Append word
-        if (line_len > 0) {
+        if (line_len > 0)
+        {
             strcat(line, " ");
             line_len++;
         }
@@ -131,44 +152,121 @@ void print_left_auto(WINDOW *win, int start_y, const char *text) {
     }
 
     // Print leftover
-    if (line_len > 0) {
+    if (line_len > 0)
+    {
         mvwprintw(win, y, margin, "%s", line);
     }
 }
 
-
-void print_center_multiline(WINDOW *win, int start_y, const char *text) {
+void print_center_multiline(WINDOW *win, int start_y, const char *text)
+{
     // Split text on \n and call print_center for each line
     int y = start_y;
     char buffer[1024];
     int i = 0, j = 0;
-    while (text[i]) {
-        if (text[i] == '\n') {
+    while (text[i])
+    {
+        if (text[i] == '\n')
+        {
             buffer[j] = '\0';
             print_center(win, y++, buffer);
             j = 0;
-        } else {
+        }
+        else
+        {
             buffer[j++] = text[i];
         }
         i++;
     }
-    if (j > 0) buffer[j] = '\0', print_center(win, y, buffer);
+    if (j > 0)
+        buffer[j] = '\0', print_center(win, y, buffer);
 }
 
-void print_topleft(WINDOW *win, int y, int x, const char *text) {
+void print_topleft(WINDOW *win, int y, int x, const char *text)
+{
     mvwprintw(win, y, x, "%s", text);
 }
 
-void print_topright(WINDOW *win, int y, const char *text) {
+void print_topright(WINDOW *win, int y, const char *text)
+{
     int x = COLS - strlen(text) - 1;
     mvwprintw(win, y, x, "%s", text);
 }
 
-void print_bottomleft(WINDOW *win, int y, const char *text) {
+void print_bottomleft(WINDOW *win, int y, const char *text)
+{
     mvwprintw(win, LINES - y - 1, 0, "%s", text);
 }
 
-void print_bottomright(WINDOW *win, int y, const char *text) {
+void print_bottomright(WINDOW *win, int y, const char *text)
+{
     int x = COLS - strlen(text) - 1;
     mvwprintw(win, LINES - y - 1, x, "%s", text);
+}
+
+void print_options(WINDOW *win, const enum Option options[])
+{
+    int margin = 2;
+    int y = LINES - 2; // always start at the bottom of the screen
+    for (int i = 0; options[i] != OPTIONS_END; i++)
+    {
+        const char *text = "";
+
+        switch (options[i])
+        {
+        case SHELL:
+            text = "Press S for shell";
+            break;
+        case EXIT:
+            text = "Press ESC to exit";
+            break;
+        case CONTINUE:
+            text = "Press ENTER to continue";
+            break;
+        case RESET_ALL:
+            text = "Press R to reset all";
+            break;
+        case VALIDATE:
+            text = "Press ENTER to test your solution";
+            break;
+        case RETURN_INSTRUCTIONS:
+            text = "press BACKSPACE to return to instructions";
+            break;
+        case RETURN_MENU:
+            text = "press BACKSPACE to return to the menu";
+            break;
+        case SELECT_EXERCISE:
+            text = "press ENTER to select an exercise";
+            break;
+        case GENERATE_RANDOM:
+            text = "press R to start creating a randomized study set";
+            break;
+        case VIEW_EXERCISES:
+            text = "press V to view exercises";
+            break;
+        case ABLE_EXERCISE:
+            text = "press E to enable/disable the exercise";
+            break;
+        case MENU:
+            text = "Press M for menu";
+            break;
+        default:
+            break;
+        }
+
+        mvwprintw(win, y--, margin, "%s", text);
+    }
+    return_cursor(win);
+}
+
+void print_border_line(WINDOW *win, int y) {
+    int x = 0;
+    for (int i = 0; i < COLS; i++) {
+        mvwprintw(win, y, x++, "-");
+    }
+}
+
+void return_cursor(WINDOW *win)
+{
+    wmove(win, LINES - 1, 0);
 }

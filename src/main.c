@@ -42,6 +42,7 @@ int main(void) {
 
     for (int i = 0; i < exercise_count; i++) {
         int action = run_exercise(&exercises[i]); // we run the exercise according to the exercise array
+        if (action == ACTION_SKIP) continue;
         if (action == ACTION_EXIT) break;
 
         if (exercises[i].validate()) // use the validate function associated with the exercise
