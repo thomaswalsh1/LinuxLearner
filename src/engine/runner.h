@@ -30,4 +30,8 @@ int run_exercise_list(void);
 
 int run_exercise_selected_menu(Exercise *ex);
 
+
+// road-to-v0.2.0
+Exercise* run_exercise_list_and_select(int *selected_index);
+
 #endif

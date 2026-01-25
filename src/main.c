@@ -19,6 +19,10 @@ int main(void)
     // initializing project root
     init_project_root();
 
+    ExerciseList exercise_list = load_exercises_from_all();
+    exercises = exercise_list.exercises; // unloading exercises to global variable
+    exercise_count = exercise_list.count;
+    
     // app state
     AppState current_app_state = APP_TITLE;
 
@@ -36,26 +40,45 @@ int main(void)
         case APP_TITLE:
             show_title();
             ch = getch();
-            if (ch == KEY_RESIZE) show_title();
-            if (ch == 27) current_app_state = APP_EXIT;
-            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_MAIN_MENU;
+            if (ch == KEY_RESIZE)
+                show_title();
+            if (ch == 27)
+                current_app_state = APP_EXIT;
+            if (ch == '\n' || ch == KEY_ENTER)
+                current_app_state = APP_MAIN_MENU;
             break;
         case APP_MAIN_MENU:
             show_main_menu();
             ch = getch();
-            if (ch == KEY_RESIZE) show_main_menu();
-            if (ch == 27) current_app_state = APP_EXIT;
-            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_EXIT;
-            if (ch == 'h' || ch == 'H') current_app_state = APP_EXPLANATION;
-            if (ch == 'v' || ch == 'V') current_app_state = APP_EXERCISE_LIST;
+            if (ch == KEY_RESIZE)
+                show_main_menu();
+            if (ch == 27)
+                current_app_state = APP_EXIT;
+            if (ch == '\n' || ch == KEY_ENTER)
+                current_app_state = APP_EXIT;
+            if (ch == 'h' || ch == 'H')
+                current_app_state = APP_EXPLANATION;
+            if (ch == 'v' || ch == 'V')
+                current_app_state = APP_EXERCISE_LIST;
             break;
         case APP_EXPLANATION:
             show_explanation();
             ch = getch();
-            if (ch == KEY_RESIZE) show_explanation();
-            if (ch == 127 || ch == KEY_BACKSPACE) current_app_state = APP_MAIN_MENU;
+            if (ch == KEY_RESIZE)
+                show_explanation();
+            if (ch == 127 || ch == KEY_BACKSPACE)
+                current_app_state = APP_MAIN_MENU;
             break;
         case APP_EXERCISE_LIST:
+            current_exercise = run_exercise_list_and_select(&current_exercise_index);
+            if (current_exercise != NULL)
+            {
+                current_app_state = APP_EXERCISE;
+            }
+            else
+            {
+                current_app_state = APP_MAIN_MENU;
+            }
             break;
         case APP_EXERCISE:
             break;
