@@ -5,6 +5,8 @@
 #include "config/config_parser.h"
 #include "engine/runner.h"
 #include "ui/screens.h"
+#include "app_state.h"
+
 
 int main(void) {
     // ncurses initialization
@@ -12,49 +14,41 @@ int main(void) {
     raw();
     keypad(stdscr, TRUE);
     noecho();
+    curs_set(0); // hide the cursor
 
     // initializing project root
     init_project_root();
 
-    // generate exercise list from configuration files
-    ExerciseList exercise_list = load_exercises_from_all();
-    exercises = exercise_list.exercises; // unloading exercises to global variable
-    exercise_count = exercise_list.count; // unloading exercise count to global variable
+    // app state
+    AppState current_app_state = APP_TITLE;
 
-    if (exercise_count == 0) {
-        endwin();
-        fprintf(stderr, "Failed to load exercises from config files\n");
-        return 1;
-    }
+    // exercise state
+    Exercise *current_exercise = NULL;
+    int current_exercise_index = 0;
 
-    int title_status = run_title(); // run the title screen
-    if (title_status == ACTION_EXIT) {
-        endwin();
-        free_exercise_list(exercise_list); // free allocated memory using utility function
-        return 0;
-    }
-    int explanation_status = run_explanation(); // run the explanation menu
-    if (explanation_status == ACTION_EXIT){
-        endwin();
-        free_exercise_list(exercise_list); // free allocated memory using utility function
-        return 0;
-    }
-
-    for (int i = 0; i < exercise_count; i++) {
-        int action = run_exercise(&exercises[i]); // we run the exercise according to the exercise array
-        if (action == ACTION_SKIP) continue;
-        if (action == ACTION_EXIT) break;
-
-        if (exercises[i].validate()) // use the validate function associated with the exercise
-            show_success();
-        else {
-            show_failure(exercises[i].hint);
-            i--; // retry same exercise
+    // main loop
+    while(current_app_state != APP_EXIT) {
+        int ch;
+        switch(current_app_state) {
+            
+            case APP_TITLE: 
+                break;
+            case APP_EXPLANATION:
+                break;
+            case APP_MAIN_MENU:
+                break;
+            case APP_EXERCISE_LIST:
+                break;
+            case APP_EXERCISE:
+                break;
+            default:
+                current_app_state = APP_EXIT;
         }
-
     }
 
-    free_exercise_list(exercise_list);
     endwin();
     return 0;
+
+
+    
 }
