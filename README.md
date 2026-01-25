@@ -9,7 +9,7 @@ This version of Linux Learner is missing a heavy amount of features. Linux Learn
 The current version is not intended to be installed or downloaded, as this repository currently only serves to showcase the development process.
 
 
-## Instalation
+## Installation
 
 Stay tuned for updates on how to install this application. I am still working out how I plan to deploy this application to be installed by other computers and distributions.
 
