@@ -35,4 +35,9 @@ void show_exercise_list_commentary(int top_window_border, int bottom_window_bord
 void show_exercise_list_contents(Exercise *viewable_exercises, int top_window_border, int bottom_window_border, int selected_index, int top_index, int per_page);
 
 void show_exercise_selected_menu(Exercise *ex);
+
+// road-to-v0.2.0
+
+void show_main_menu(void);
+
 #endif

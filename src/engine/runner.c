@@ -113,68 +113,6 @@ void launch_shell(void)
     refresh();
 }
 
-int run_title(void)
-{
-    int ch;
-    // first menu, name and title
-    show_title();
-
-    while (1)
-    {
-        ch = getch();
-        if (ch == KEY_RESIZE)
-        { // handle resizing
-            show_title();
-        }
-        if (ch == 27)
-            return ACTION_EXIT;
-        if (ch == '\n' || ch == KEY_ENTER)
-            return ACTION_CONTINUE;
-    }
-}
-
-int run_explanation(void)
-{
-    int ch;
-    // explanation menu
-    show_explanation();
-
-    while (1)
-    {
-        ch = getch();
-        if (ch == KEY_RESIZE)
-        {
-            show_explanation();
-        }
-        if (ch == 27)
-            return ACTION_EXIT;
-        if (ch == '\n' || ch == KEY_ENTER)
-            return ACTION_CONTINUE;
-        if (ch == 'r' || ch == 'R')
-        {
-            reset_all_output_files();
-            int secondary_action = show_outputs_reset();
-            if (secondary_action == ACTION_CONTINUE)
-            {
-                show_explanation();
-            }
-            else
-            { // exit
-                return ACTION_EXIT;
-            }
-        }
-        if (ch == 'm' || ch == 'M')
-        {
-            int menu_action = run_exercise_menu();
-            if (menu_action == ACTION_EXIT)
-            {
-                show_explanation();
-            }
-            continue;
-        }
-    }
-}
-
 int run_exercise_menu(void)
 {
     int ch;

@@ -33,6 +33,9 @@ enum Option
     ABLE_EXERCISE,
     GENERATE_RANDOM,
     SELECT_EXERCISE,
+    VIEW_INSTRUCTIONS,
+    VIEW_SETTINGS,
+    RUN_CURRENT_EXERCISES,
     OPTIONS_END
 };
 void print_options(WINDOW *win, const enum Option options[]);

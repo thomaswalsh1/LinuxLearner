@@ -89,15 +89,15 @@ void show_title(void)
     refresh();
 }
 
-void show_explanation(void)
-{
-    const enum Option options[] = {RESET_ALL, MENU, EXIT, CONTINUE, OPTIONS_END};
-    clear();
-    print_center_auto(stdscr, 2, "How this works:");
-    print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
-    print_options(stdscr, options);
-    refresh();
-}
+// void show_explanation(void)
+// {
+//     const enum Option options[] = {RESET_ALL, MENU, EXIT, CONTINUE, OPTIONS_END};
+//     clear();
+//     print_center_auto(stdscr, 2, "How this works:");
+//     print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
+//     print_options(stdscr, options);
+//     refresh();
+// }
 
 int show_outputs_reset(void)
 {
@@ -197,5 +197,25 @@ void show_exercise_selected_menu(Exercise *ex) {
     print_left_auto(stdscr, 11, directory_line);
     print_options(stdscr, options);
 
+    refresh();
+}
+
+// road-to-v0.2.0
+void show_main_menu(void) {
+    const enum Option options[] = {EXIT, VIEW_INSTRUCTIONS, VIEW_SETTINGS, VIEW_EXERCISES, RUN_CURRENT_EXERCISES, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 5, "Main Menu");
+    print_left_auto(stdscr, 7, "Welcome to the main menu of LinuxLearner.");
+    print_options(stdscr, options);
+    refresh();
+}
+
+void show_explanation(void)
+{
+    const enum Option options[] = {RETURN_MENU, OPTIONS_END};
+    clear();
+    print_center_auto(stdscr, 2, "How this works:");
+    print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
+    print_options(stdscr, options);
     refresh();
 }

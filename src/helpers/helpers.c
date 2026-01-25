@@ -244,6 +244,15 @@ void print_options(WINDOW *win, const enum Option options[])
         case VIEW_EXERCISES:
             text = "press V to view exercises";
             break;
+        case VIEW_INSTRUCTIONS:
+            text = "press H to for instructions";
+            break;
+        case VIEW_SETTINGS:
+            text = "press S to go to settings";
+            break;
+        case RUN_CURRENT_EXERCISES:
+            text = "press ENTER to run current exercises";
+            break;
         case ABLE_EXERCISE:
             text = "press E to enable/disable the exercise";
             break;

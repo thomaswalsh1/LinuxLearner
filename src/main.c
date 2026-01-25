@@ -7,8 +7,8 @@
 #include "ui/screens.h"
 #include "app_state.h"
 
-
-int main(void) {
+int main(void)
+{
     // ncurses initialization
     initscr();
     raw();
@@ -27,28 +27,43 @@ int main(void) {
     int current_exercise_index = 0;
 
     // main loop
-    while(current_app_state != APP_EXIT) {
+    while (current_app_state != APP_EXIT)
+    {
         int ch;
-        switch(current_app_state) {
-            
-            case APP_TITLE: 
-                break;
-            case APP_EXPLANATION:
-                break;
-            case APP_MAIN_MENU:
-                break;
-            case APP_EXERCISE_LIST:
-                break;
-            case APP_EXERCISE:
-                break;
-            default:
-                current_app_state = APP_EXIT;
+        switch (current_app_state)
+        {
+
+        case APP_TITLE:
+            show_title();
+            ch = getch();
+            if (ch == KEY_RESIZE) show_title();
+            if (ch == 27) current_app_state = APP_EXIT;
+            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_MAIN_MENU;
+            break;
+        case APP_MAIN_MENU:
+            show_main_menu();
+            ch = getch();
+            if (ch == KEY_RESIZE) show_main_menu();
+            if (ch == 27) current_app_state = APP_EXIT;
+            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_EXIT;
+            if (ch == 'h' || ch == 'H') current_app_state = APP_EXPLANATION;
+            if (ch == 'v' || ch == 'V') current_app_state = APP_EXERCISE_LIST;
+            break;
+        case APP_EXPLANATION:
+            show_explanation();
+            ch = getch();
+            if (ch == KEY_RESIZE) show_explanation();
+            if (ch == 127 || ch == KEY_BACKSPACE) current_app_state = APP_MAIN_MENU;
+            break;
+        case APP_EXERCISE_LIST:
+            break;
+        case APP_EXERCISE:
+            break;
+        default:
+            current_app_state = APP_EXIT;
         }
     }
 
     endwin();
     return 0;
-
-
-    
 }
