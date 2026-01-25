@@ -57,6 +57,10 @@ void reset_all_output_files(void)
 
 int run_exercise(const Exercise *ex)
 {
+    if(ex->is_enabled == 0) {
+        return ACTION_SKIP;
+    }
+
     int ch;
 
     // reset to lab directory
