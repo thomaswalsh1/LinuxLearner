@@ -2,11 +2,7 @@
 #define RUNNER_H
 
 #include "../exercises.h"
-
-#define ACTION_EXIT 0
-#define ACTION_CONTINUE 1
-#define ACTION_RETRY 2
-#define ACTION_SKIP 3
+#include "app_state.h"
 
 // Global variable for the project root
 extern char project_root[512];
@@ -17,7 +13,7 @@ extern char project_root[512];
 void init_project_root(void);
 
 // Generic runner for any exercise
-int run_exercise(const Exercise *ex);
+ExerciseResult run_exercise(const Exercise *ex);
 
 /**
  * Launch a "sandbox version of the shell"

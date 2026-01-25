@@ -1,6 +1,7 @@
 #include "runner.h"
 #include "helpers.h"
 #include "screens.h"
+#include "app_state.h"
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -55,7 +56,7 @@ void reset_all_output_files(void)
     }
 }
 
-int run_exercise(const Exercise *ex)
+ExerciseResult run_exercise(const Exercise *ex)
 {
     if(ex->is_enabled == 0) {
         return ACTION_SKIP;
@@ -93,7 +94,13 @@ int run_exercise(const Exercise *ex)
         if (ch == 27)
             return ACTION_EXIT;
         if (ch == '\n' || ch == KEY_ENTER)
-            return ACTION_CONTINUE;
+            if(ex->validate()) {
+                // success
+                return show_success();
+            } else {
+                // fail
+                return show_failure(ex->hint);
+            }
     }
 }
 

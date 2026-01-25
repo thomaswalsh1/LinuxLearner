@@ -256,6 +256,18 @@ void print_options(WINDOW *win, const enum Option options[])
         case ABLE_EXERCISE:
             text = "press E to enable/disable the exercise";
             break;
+        case RUN_SINGULAR_EXERCISE:
+            text = "press ENTER to run this exercise";
+            break;
+        case NEXT_EXERCISE:
+            text = "press ENTER to go the next exercise";
+            break;
+        case RETRY_EXERCISE:
+            text = "press ENTER to retry the exercise";
+            break;
+        case GET_HINT:
+            text = "press H to get a hint";
+            break;
         case MENU:
             text = "Press M for menu";
             break;

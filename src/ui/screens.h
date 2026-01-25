@@ -4,11 +4,12 @@
 
 
 #include "exercises.h"
+#include "app_state.h"
 
 /**
  * UI helper function that displays the success page
  */
-int show_success(void);
+ExerciseResult show_success(void);
 
 /**
  * UI helper function that displays the instructions for an assignment
@@ -18,7 +19,7 @@ void show_instructions(const Exercise *ex);
 /**
  * UI helper function that displays the failure page
  */
-int show_failure(const char *hint);
+ExerciseResult show_failure(const char *hint);
 
 void show_title(void);
 

@@ -36,7 +36,11 @@ enum Option
     VIEW_INSTRUCTIONS,
     VIEW_SETTINGS,
     RUN_CURRENT_EXERCISES,
-    OPTIONS_END
+    RUN_SINGULAR_EXERCISE,
+    RETRY_EXERCISE,
+    NEXT_EXERCISE,
+    GET_HINT,
+    OPTIONS_END,
 };
 void print_options(WINDOW *win, const enum Option options[]);
 

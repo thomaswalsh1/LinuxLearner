@@ -3,6 +3,7 @@
 #include "helpers.h"
 #include <ncurses.h>
 #include "exercises.h"
+#include "app_state.h"
 #include <string.h>
 #include "runner.h"
 #include <stdlib.h>
@@ -12,15 +13,16 @@
 #define CELL_WIDTH 25
 #define CELL_HEIGHT 3
 
-int show_success(void)
+ExerciseResult show_success(void)
 {
+    const enum Option options[] = {EXIT, RETURN_MENU, NEXT_EXERCISE, OPTIONS_END};
+
     while (1)
     {
         clear();
         print_left_auto(stdscr, 5, "Success!");
         print_left_auto(stdscr, 7, "You completed the exercise correctly.");
-        print_left_auto(stdscr, 9, "Press any key to continue.");
-        return_cursor(stdscr);
+        print_options(stdscr, options);
         refresh();
 
         int ch = getch();
@@ -28,29 +30,34 @@ int show_success(void)
         {
             continue; // redraw on resize
         }
-        else if (ch == 27)
-        { // ESC
+        if (ch == 27)
+        {
             return ACTION_EXIT;
         }
-        return ACTION_CONTINUE;
+        if (ch == 127 || ch == KEY_BACKSPACE) {
+            return ACTION_RETURN;
+        }
+        if (ch == '\n' || ch == KEY_ENTER) {
+            return ACTION_CONTINUE;
+        }
     }
 }
 
-int show_failure(const char *hint)
+ExerciseResult show_failure(const char *hint)
 {
+    const enum Option options[] = {EXIT, RETURN_MENU, GET_HINT, RETRY_EXERCISE, OPTIONS_END};
     int show_hint = 0;
     while (1)
     {
         clear();
         print_left_auto(stdscr, 5, "Not quite.");
+        print_left_auto(stdscr, 7, "Check your command reference and try again.");
         char hint_str[256] = "Hint: ";
         strcat(hint_str, hint);
         if (show_hint)
-            print_left_auto(stdscr, 7, hint_str);
-        print_left_auto(stdscr, 9, "Press ENTER to retry, ESC to quit, or H for a hint.");
-        return_cursor(stdscr);
+            print_left_auto(stdscr, 9, hint_str);
+        print_options(stdscr, options);
         refresh();
-
         int ch = getch();
         if (ch == KEY_RESIZE)
         {
@@ -65,13 +72,18 @@ int show_failure(const char *hint)
             show_hint = 1;
             continue;
         }
-        return ACTION_RETRY;
+        if (ch == 127 || ch == KEY_BACKSPACE) {
+            return ACTION_RETURN;
+        }
+        if (ch == '\n' || ch == KEY_ENTER) {
+            return ACTION_RETRY;
+        }
     }
 }
 
 void show_instructions(const Exercise *ex)
 {
-    const enum Option options[] = {EXIT, VALIDATE, SHELL, OPTIONS_END};
+    const enum Option options[] = {EXIT, RETURN_MENU, VALIDATE, SHELL, OPTIONS_END};
     clear();
     print_left_auto(stdscr, 5, ex->title);
     print_left_auto(stdscr, 7, ex->description);
@@ -88,16 +100,6 @@ void show_title(void)
     print_options(stdscr, options);
     refresh();
 }
-
-// void show_explanation(void)
-// {
-//     const enum Option options[] = {RESET_ALL, MENU, EXIT, CONTINUE, OPTIONS_END};
-//     clear();
-//     print_center_auto(stdscr, 2, "How this works:");
-//     print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
-//     print_options(stdscr, options);
-//     refresh();
-// }
 
 int show_outputs_reset(void)
 {
@@ -116,9 +118,9 @@ int show_outputs_reset(void)
         }
         if (ch == 27)
         { // ESC
-            return ACTION_EXIT;
+            return 1;
         }
-        return ACTION_CONTINUE;
+        return 2;
     }
 }
 
@@ -177,7 +179,7 @@ void show_exercise_list_contents(
 }
 
 void show_exercise_selected_menu(Exercise *ex) {
-    const enum Option options[] = {RETURN_MENU, ABLE_EXERCISE, OPTIONS_END};
+    const enum Option options[] = {RETURN_MENU, ABLE_EXERCISE, RUN_SINGULAR_EXERCISE, OPTIONS_END};
 
     clear();
     char description_line[256];

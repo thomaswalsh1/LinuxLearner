@@ -8,13 +8,16 @@ typedef enum {
     APP_MAIN_MENU,
     APP_EXERCISE_LIST,
     APP_EXERCISE,
-    APP_SETTINGS
+    APP_EXERCISE_METADATA,
+    APP_SETTINGS,
 } AppState;
 
 typedef enum {
-    ACTION_CONTINUE_A,
-    ACTION_RETURN_A,
-    ACTION_EXIT_A
+    ACTION_CONTINUE,
+    ACTION_RETURN,
+    ACTION_EXIT,
+    ACTION_SKIP,
+    ACTION_RETRY
 } ExerciseResult;
 
 #endif

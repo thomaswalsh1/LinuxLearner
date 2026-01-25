@@ -22,7 +22,7 @@ int main(void)
     ExerciseList exercise_list = load_exercises_from_all();
     exercises = exercise_list.exercises; // unloading exercises to global variable
     exercise_count = exercise_list.count;
-    
+
     // app state
     AppState current_app_state = APP_TITLE;
 
@@ -55,7 +55,7 @@ int main(void)
             if (ch == 27)
                 current_app_state = APP_EXIT;
             if (ch == '\n' || ch == KEY_ENTER)
-                current_app_state = APP_EXIT;
+                current_app_state = APP_EXERCISE;
             if (ch == 'h' || ch == 'H')
                 current_app_state = APP_EXPLANATION;
             if (ch == 'v' || ch == 'V')
@@ -73,14 +73,47 @@ int main(void)
             current_exercise = run_exercise_list_and_select(&current_exercise_index);
             if (current_exercise != NULL)
             {
-                current_app_state = APP_EXERCISE;
+                current_app_state = APP_EXERCISE_METADATA;
             }
             else
             {
                 current_app_state = APP_MAIN_MENU;
             }
             break;
+        case APP_EXERCISE_METADATA:
+            show_exercise_selected_menu(current_exercise);
+            ch = getch();
+            if (ch == KEY_RESIZE) show_exercise_selected_menu(current_exercise);
+            if (ch == 127 || ch == KEY_BACKSPACE) current_app_state = APP_EXERCISE_LIST;
+            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_EXERCISE;
+            if (ch == 'e' || ch == 'E') {
+                int enabled = current_exercise->is_enabled;
+                current_exercise->is_enabled = 1-enabled;
+                show_exercise_selected_menu(current_exercise);
+            }
+            break;
         case APP_EXERCISE:
+            if (current_exercise == NULL) current_exercise = &exercises[current_exercise_index];
+            ExerciseResult result = run_exercise(current_exercise);
+            if (result == ACTION_CONTINUE) {
+                int next_index = current_exercise_index + 1;
+                    while (next_index < exercise_count && !exercises[next_index].is_enabled)
+                        next_index++;
+
+                    if (next_index < exercise_count) {
+                        current_exercise = &exercises[next_index];
+                        current_exercise_index = next_index;
+                        current_app_state = APP_EXERCISE;
+                    } else {
+                        current_app_state = APP_MAIN_MENU;
+                    }
+            } else if (result == ACTION_RETURN) {
+                current_app_state = APP_MAIN_MENU;
+            } else if (result == ACTION_EXIT) {
+                current_app_state = APP_EXIT;
+            } else if (result == ACTION_RETRY) {
+                current_app_state = APP_EXERCISE;
+            }
             break;
         default:
             current_app_state = APP_EXIT;
