@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#define GRID_COLS 3
+#define CELL_WIDTH 25
+#define CELL_HEIGHT 3
+
 int show_success(void)
 {
     while (1)
@@ -157,28 +161,23 @@ void show_exercise_list_contents(
     int bottom_window_border,
     int selected_index,
     int top_index,
-    int per_page
-) {
+    int per_page)
+{
     int y = top_window_border + 1;
-
     int end = top_index + per_page - 1;
     if (end > exercise_count)
         end = exercise_count;
-
-    for (int i = top_index; i < end; i++) {
-        // Clear the whole row first
+    for (int i = top_index; i < end; i++)
+    {
         mvwprintw(stdscr, y, 0, "%*s", COLS, "");
-
-        // Selection marker
         if (i == selected_index)
             mvwprintw(stdscr, y, 0, ">");
-
-        // Title
         mvwprintw(stdscr, y, 2, "%s", viewable_exercises[i].title);
+        mvwprintw(stdscr, y, 40, "%s", viewable_exercises[i].lab_dir);
+        mvwprintw(stdscr, y, 60, "%s", viewable_exercises[i].is_enabled ? "on" : "off");
 
         y++;
     }
-
     return_cursor(stdscr);
     refresh();
 }
