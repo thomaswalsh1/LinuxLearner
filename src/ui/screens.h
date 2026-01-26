@@ -25,8 +25,6 @@ void show_title(void);
 
 void show_explanation(void);
 
-void show_exercise_selection(void);
-
 int show_outputs_reset(void);
 
 void show_exercise_menu(void);
@@ -40,5 +38,9 @@ void show_exercise_selected_menu(Exercise *ex);
 // road-to-v0.2.0
 
 void show_main_menu(void);
+
+void show_settings(void);
+
+void show_reset_confirmation_screen(void);
 
 #endif

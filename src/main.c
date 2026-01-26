@@ -63,6 +63,8 @@ int main(void)
                 current_app_state = APP_EXPLANATION;
             if (ch == 'v' || ch == 'V')
                 current_app_state = APP_EXERCISE_LIST;
+            if (ch == 's' || ch == 'S')
+                current_app_state = APP_SETTINGS;
             break;
         case APP_EXPLANATION:
             show_explanation();
@@ -131,6 +133,41 @@ int main(void)
             else if (result == ACTION_RETRY)
             {
                 current_app_state = APP_EXERCISE;
+            }
+            break;
+        case APP_SETTINGS:
+            show_settings();
+            ch = getch();
+            if (ch == KEY_RESIZE)
+            {
+                show_settings();
+            }
+            if (ch == 127 || ch == KEY_BACKSPACE)
+            {
+                current_app_state = APP_MAIN_MENU;
+            }
+            if (ch == 'r' || ch == 'R')
+            {
+                int ch2;
+                show_reset_confirmation_screen();
+
+                while (1)
+                {
+                    ch2 = getch();
+                    if (ch2 == KEY_RESIZE)
+                    {
+                        show_reset_confirmation_screen();
+                    }
+                    if (ch2 == '\n' || ch2 == KEY_ENTER)
+                    {
+                        reset_all_output_files();
+                        break;
+                    }
+                    if (ch2 == 127 || ch2 == KEY_BACKSPACE)
+                    {
+                        break;
+                    }
+                }
             }
             break;
         default:

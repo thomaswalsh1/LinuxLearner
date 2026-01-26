@@ -224,7 +224,7 @@ void print_options(WINDOW *win, const enum Option options[])
             text = "Press ENTER to continue";
             break;
         case RESET_ALL:
-            text = "Press R to reset all";
+            text = "Press R to reset all exercises";
             break;
         case VALIDATE:
             text = "Press ENTER to test your solution";
@@ -267,6 +267,12 @@ void print_options(WINDOW *win, const enum Option options[])
             break;
         case GET_HINT:
             text = "Press H to get a hint";
+            break;
+        case RETURN_SETTINGS:
+            text = "Press BACKSPACE to return to settings";
+            break;
+        case CONFIRM_RESET:
+            text = "Press ENTER to reset all exercises";
             break;
         case MENU:
             text = "Press M for menu";

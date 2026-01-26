@@ -201,7 +201,7 @@ void show_exercise_selected_menu(Exercise *ex) {
 void show_main_menu(void) {
     const enum Option options[] = {EXIT, VIEW_INSTRUCTIONS, VIEW_SETTINGS, VIEW_EXERCISES, RUN_CURRENT_EXERCISES, OPTIONS_END};
     clear();
-    print_left_auto(stdscr, 5, "Main Menu");
+    print_center_auto(stdscr, 2, "Main Menu");
     print_left_auto(stdscr, 7, "Welcome to the main menu of LinuxLearner.");
     print_options(stdscr, options);
     refresh();
@@ -212,7 +212,23 @@ void show_explanation(void)
     const enum Option options[] = {RETURN_MENU, OPTIONS_END};
     clear();
     print_center_auto(stdscr, 2, "How this works:");
-    print_center_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
+    print_left_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
+    print_options(stdscr, options);
+    refresh();
+}
+
+void show_settings(void) {
+    const enum Option options[] = {RETURN_MENU, RESET_ALL, OPTIONS_END};
+    clear();
+    print_center_auto(stdscr, 2, "Settings");
+    print_options(stdscr, options);
+    refresh();
+}
+
+void show_reset_confirmation_screen(void) {
+    const enum Option options[] = {RETURN_SETTINGS, CONFIRM_RESET, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 4, "Are you sure you want to reset all exercises?");
     print_options(stdscr, options);
     refresh();
 }

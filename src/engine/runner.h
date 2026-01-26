@@ -20,12 +20,7 @@ ExerciseResult run_exercise(const Exercise *ex);
  */
 void launch_shell(void);
 
-int run_exercise_menu(void);
-
-int run_exercise_list(void);
-
-int run_exercise_selected_menu(Exercise *ex);
-
+void reset_all_output_files(void);
 
 // road-to-v0.2.0
 Exercise* run_exercise_list_and_select(int *selected_index);
