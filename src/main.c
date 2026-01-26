@@ -115,7 +115,7 @@ int main(void)
             if (result == ACTION_CONTINUE)
             {
                 int next_index = current_exercise_index + 1;
-                while (next_index < exercise_count && !(exercises[next_index].is_enabled == 0))
+                while (next_index < exercise_count && !exercises[next_index].is_enabled)
                     next_index++;
 
                 if (next_index < exercise_count)
