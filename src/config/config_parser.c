@@ -3,9 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <dirent.h>
 #include <errno.h>
 #include <ctype.h>
+#include "runner.h"
 
 #define MAX_LINE 512
 #define MAX_EXERCISES 100
@@ -136,7 +138,7 @@ static Exercise parse_conf_file(const char *filepath) {
         } else if (strcmp(key, "validator") == 0) {
             validator_name = strdup(value);
         } else if (strcmp(key, "completed") == 0) {
-            ex.is_completed = strdup(value);
+            ex.is_completed = atoi(value);
         }
     }
     
@@ -329,6 +331,13 @@ void free_exercise_list(ExerciseList list) {
 }
 
 void modify_exercise_data(Exercise *ex, const enum PersistentOption option) {
+    // reset to lab directory
+    if (chdir(project_root) != 0)
+    {
+        perror("chdir to project root");
+        return ACTION_EXIT;
+    }
+
     if (!ex || !ex->id) {
         fprintf(stderr, "Invalid exercise provided\n");
         return;

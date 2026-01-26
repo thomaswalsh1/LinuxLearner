@@ -108,7 +108,7 @@ int main(void)
         case APP_EXERCISE:
             if (current_exercise == NULL)
                 current_exercise = &exercises[current_exercise_index];
-            if (current_exercise->is_completed == 1) {
+            while (current_exercise->is_completed == 1) {
                 current_exercise = &exercises[++current_exercise_index];
             }
             ExerciseResult result = run_exercise(current_exercise);
