@@ -271,6 +271,9 @@ void print_options(WINDOW *win, const enum Option options[])
         case RETURN_SETTINGS:
             text = "Press BACKSPACE to return to settings";
             break;
+        case RESET_EXERCISE:
+            text = "Press R to reset this exercise";
+            break;
         case CONFIRM_RESET:
             text = "Press ENTER to reset all exercises";
             break;

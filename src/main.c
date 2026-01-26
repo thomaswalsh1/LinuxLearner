@@ -100,6 +100,10 @@ int main(void)
                 current_exercise->is_enabled = 1 - enabled;
                 show_exercise_selected_menu(current_exercise);
             }
+            if (ch == 'r' || ch == 'R') {
+                reset_single_exercise(current_exercise);
+                show_exercise_selected_menu(current_exercise);
+            }
             break;
         case APP_EXERCISE:
             if (current_exercise == NULL)

@@ -22,22 +22,21 @@ void init_project_root(void)
     }
 }
 
-
-void mark_complete(Exercise *ex) {
+void mark_complete(Exercise *ex)
+{
     // change in memory
     ex->is_completed = 1;
     // now change on disk
     modify_exercise_data(ex, MARK_EX_COMPLETE);
 };
 
-void mark_incomplete(Exercise *ex) {
+void mark_incomplete(Exercise *ex)
+{
     // change in memory
     ex->is_completed = 0;
     // now change on disk
     modify_exercise_data(ex, MARK_EX_INCOMPLETE);
-
 }
-
 
 void reset_all_output_files(void)
 {
@@ -75,6 +74,32 @@ void reset_all_output_files(void)
         }
         chdir(project_root);
     }
+}
+
+void reset_single_exercise(Exercise *ex)
+{
+    if (chdir(project_root) != 0)
+    {
+        perror("reset_all_output_files: chdir project_root");
+        return;
+    }
+    mark_incomplete(ex);
+
+    if (!ex->target_file || strlen(ex->target_file) == 0)
+        return;
+    // check for lab directory
+    if (chdir(ex->lab_dir) != 0)
+    {
+        perror("reset_all_output_files: chdir lab_dir");
+        chdir(project_root);
+        return;
+    }
+    // attempt to remove
+    if (remove(ex->target_file) == 0)
+        printf("%s : target file %s removed. \n", ex->title, ex->target_file);
+    else
+        printf("%s : failed to remove target file %s \n", ex->title, ex->target_file);
+    chdir(project_root);
 }
 
 ExerciseResult run_exercise(const Exercise *ex)

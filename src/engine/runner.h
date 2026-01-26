@@ -22,6 +22,8 @@ void launch_shell(void);
 
 void reset_all_output_files(void);
 
+void reset_single_exercise(Exercise *ex);
+
 // road-to-v0.2.0
 Exercise* run_exercise_list_and_select(int *selected_index);
 

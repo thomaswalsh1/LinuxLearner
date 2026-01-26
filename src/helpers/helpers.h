@@ -41,6 +41,7 @@ enum Option
     NEXT_EXERCISE,
     RETURN_SETTINGS,
     CONFIRM_RESET,
+    RESET_EXERCISE,
     GET_HINT,
     OPTIONS_END,
 };

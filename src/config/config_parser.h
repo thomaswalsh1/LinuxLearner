@@ -46,8 +46,9 @@ const enum PersistentOption {
     MARK_EX_COMPLETE,
     MARK_EX_INCOMPLETE
 };
+
 /**
- * Modify a persistant attribute on disk for an exercise
+ * Modify a persistent attribute on disk for an exercise
  * @param option How you want to change this exercise
  */
 void modify_exercise_data(Exercise *ex, const enum PersistentOption option);
