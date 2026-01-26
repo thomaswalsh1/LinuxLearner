@@ -20,4 +20,6 @@ typedef enum {
     ACTION_RETRY
 } ExerciseResult;
 
+extern int last_top_index;
+
 #endif

@@ -7,6 +7,8 @@
 #include "ui/screens.h"
 #include "app_state.h"
 
+int last_top_index = 0;
+
 int main(void)
 {
     // ncurses initialization
@@ -48,6 +50,7 @@ int main(void)
                 current_app_state = APP_MAIN_MENU;
             break;
         case APP_MAIN_MENU:
+            last_top_index = 0;
             show_main_menu();
             ch = getch();
             if (ch == KEY_RESIZE)
@@ -83,35 +86,50 @@ int main(void)
         case APP_EXERCISE_METADATA:
             show_exercise_selected_menu(current_exercise);
             ch = getch();
-            if (ch == KEY_RESIZE) show_exercise_selected_menu(current_exercise);
-            if (ch == 127 || ch == KEY_BACKSPACE) current_app_state = APP_EXERCISE_LIST;
-            if (ch == '\n' || ch == KEY_ENTER) current_app_state = APP_EXERCISE;
-            if (ch == 'e' || ch == 'E') {
+            if (ch == KEY_RESIZE)
+                show_exercise_selected_menu(current_exercise);
+            if (ch == 127 || ch == KEY_BACKSPACE)
+                current_app_state = APP_EXERCISE_LIST;
+            if (ch == '\n' || ch == KEY_ENTER)
+                current_app_state = APP_EXERCISE;
+            if (ch == 'e' || ch == 'E')
+            {
                 int enabled = current_exercise->is_enabled;
-                current_exercise->is_enabled = 1-enabled;
+                current_exercise->is_enabled = 1 - enabled;
                 show_exercise_selected_menu(current_exercise);
             }
             break;
         case APP_EXERCISE:
-            if (current_exercise == NULL) current_exercise = &exercises[current_exercise_index];
+            if (current_exercise == NULL)
+                current_exercise = &exercises[current_exercise_index];
             ExerciseResult result = run_exercise(current_exercise);
-            if (result == ACTION_CONTINUE) {
+            if (result == ACTION_CONTINUE)
+            {
                 int next_index = current_exercise_index + 1;
-                    while (next_index < exercise_count && !exercises[next_index].is_enabled)
-                        next_index++;
+                while (next_index < exercise_count && !exercises[next_index].is_enabled)
+                    next_index++;
 
-                    if (next_index < exercise_count) {
-                        current_exercise = &exercises[next_index];
-                        current_exercise_index = next_index;
-                        current_app_state = APP_EXERCISE;
-                    } else {
-                        current_app_state = APP_MAIN_MENU;
-                    }
-            } else if (result == ACTION_RETURN) {
+                if (next_index < exercise_count)
+                {
+                    current_exercise = &exercises[next_index];
+                    current_exercise_index = next_index;
+                    current_app_state = APP_EXERCISE;
+                }
+                else
+                {
+                    current_app_state = APP_MAIN_MENU;
+                }
+            }
+            else if (result == ACTION_RETURN)
+            {
                 current_app_state = APP_MAIN_MENU;
-            } else if (result == ACTION_EXIT) {
+            }
+            else if (result == ACTION_EXIT)
+            {
                 current_app_state = APP_EXIT;
-            } else if (result == ACTION_RETRY) {
+            }
+            else if (result == ACTION_RETRY)
+            {
                 current_app_state = APP_EXERCISE;
             }
             break;

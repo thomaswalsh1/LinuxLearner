@@ -129,7 +129,7 @@ void launch_shell(void)
 Exercise *run_exercise_list_and_select(int *selected_index)
 {
     int ch;
-    int top_index = 0;
+    int top_index = last_top_index;
     int border_top = 4;
     int border_bottom = LINES - 5;
     int visible_spots = border_bottom - border_top - 1;
@@ -174,10 +174,12 @@ Exercise *run_exercise_list_and_select(int *selected_index)
         else if (ch == '\n' || ch == KEY_ENTER)
         {
             *selected_index = current_index;
+            last_top_index = top_index;
             return &exercises[current_index];
         }
         else if (ch == 127 || ch == KEY_BACKSPACE)
         {
+            last_top_index = top_index;
             return NULL;
         }
         else if (ch == KEY_RESIZE)
