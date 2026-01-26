@@ -108,11 +108,14 @@ int main(void)
         case APP_EXERCISE:
             if (current_exercise == NULL)
                 current_exercise = &exercises[current_exercise_index];
+            if (current_exercise->is_completed == 1) {
+                current_exercise = &exercises[++current_exercise_index];
+            }
             ExerciseResult result = run_exercise(current_exercise);
             if (result == ACTION_CONTINUE)
             {
                 int next_index = current_exercise_index + 1;
-                while (next_index < exercise_count && !exercises[next_index].is_enabled)
+                while (next_index < exercise_count && !(exercises[next_index].is_enabled == 0))
                     next_index++;
 
                 if (next_index < exercise_count)
