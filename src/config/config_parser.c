@@ -135,6 +135,8 @@ static Exercise parse_conf_file(const char *filepath) {
             ex.target_file = strdup(value);
         } else if (strcmp(key, "validator") == 0) {
             validator_name = strdup(value);
+        } else if (strcmp(key, "completed") == 0) {
+            ex.is_completed = strdup(value);
         }
     }
     

@@ -170,7 +170,9 @@ void show_exercise_list_contents(
             mvwprintw(stdscr, y, 0, ">");
         mvwprintw(stdscr, y, 2, "%s", viewable_exercises[i].title);
         mvwprintw(stdscr, y, 40, "%s", viewable_exercises[i].lab_dir);
-        mvwprintw(stdscr, y, 60, "%s", viewable_exercises[i].is_enabled ? "on" : "off");
+        mvwprintw(stdscr, y, 60, "%s", viewable_exercises[i].is_enabled==1 ? "on" : "off");
+        mvwprintw(stdscr, y, 65, "  |  ");
+        mvwprintw(stdscr, y, 70, "%s", viewable_exercises[i].is_completed==1 ? "done" : "    ");
         y++;
     }
     

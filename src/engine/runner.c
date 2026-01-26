@@ -121,6 +121,7 @@ ExerciseResult run_exercise(const Exercise *ex)
             if (ex->validate())
             {
                 // success
+                mark_complete(ex);
                 return show_success();
             }
             else
