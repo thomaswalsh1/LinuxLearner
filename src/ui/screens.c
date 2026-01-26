@@ -136,7 +136,7 @@ void show_exercise_menu(void)
 
 void show_exercise_list_commentary(int top_window_border, int bottom_window_border)
 {
-    const enum Option options[] = {RETURN_MENU, GENERATE_RANDOM, SELECT_EXERCISE, OPTIONS_END};
+    const enum Option options[] = {RETURN_MENU, SELECT_EXERCISE, OPTIONS_END};
 
     clear();
     print_left_auto(stdscr, 1, "This is the exercise list.");
