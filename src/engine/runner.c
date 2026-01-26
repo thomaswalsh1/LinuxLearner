@@ -165,6 +165,8 @@ void launch_shell(void)
     // introduce the shell to the user
     system("clear");
     printf("\n--- LAB SHELL ---\n");
+    printf("\n\nYou are now using your shell within the exercise's directory.");
+    printf("\nOnly use the commands needed for the exercise.\n\n");
     printf("Type your commands. Type 'exit' to return.\n\n");
     printf("If the command doesn't respond, use ctrl + c to stop it and try again.\n\n");
     system(getenv("SHELL") ? getenv("SHELL") : "/bin/sh");
