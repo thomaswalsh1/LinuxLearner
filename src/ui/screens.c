@@ -161,7 +161,7 @@ void show_exercise_list_contents(
         end = exercise_count;
     
     // Clear only the content area (not the whole screen)
-    for (int i = top_index; i < end; i++)
+    for (int i = top_index; i <= end; i++)
     {
         move(y, 0);
         clrtoeol();  // Clear only this line

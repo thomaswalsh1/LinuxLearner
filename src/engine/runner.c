@@ -58,7 +58,8 @@ void reset_all_output_files(void)
 
 ExerciseResult run_exercise(const Exercise *ex)
 {
-    if(ex->is_enabled == 0) {
+    if (ex->is_enabled == 0)
+    {
         return ACTION_SKIP;
     }
 
@@ -93,11 +94,16 @@ ExerciseResult run_exercise(const Exercise *ex)
             launch_shell();
         if (ch == 27)
             return ACTION_EXIT;
+        if (ch == 127 || ch == KEY_BACKSPACE)
+            return ACTION_RETURN;
         if (ch == '\n' || ch == KEY_ENTER)
-            if(ex->validate()) {
+            if (ex->validate())
+            {
                 // success
                 return show_success();
-            } else {
+            }
+            else
+            {
                 // fail
                 return show_failure(ex->hint);
             }
@@ -120,12 +126,13 @@ void launch_shell(void)
     refresh();
 }
 
-Exercise* run_exercise_list_and_select(int *selected_index) {
+Exercise *run_exercise_list_and_select(int *selected_index)
+{
     int ch;
     int top_index = 0;
     int border_top = 4;
     int border_bottom = LINES - 5;
-    int visible_spots = border_bottom - border_top;
+    int visible_spots = border_bottom - border_top - 1;
     int current_index = *selected_index;
 
     // Initial draw - draw everything once
@@ -133,46 +140,58 @@ Exercise* run_exercise_list_and_select(int *selected_index) {
     show_exercise_list_contents(exercises, border_top, border_bottom,
                                 current_index, top_index, visible_spots);
 
-    while (1) {
+    int needs_redraw = 0;
+    while (1)
+    {
         ch = getch();
 
-        int needs_redraw = 0;
-
-        if (ch == KEY_UP || ch == 'w' || ch == 'W') {
-            if (current_index > 0) {
+        if (ch == KEY_UP || ch == 'w' || ch == 'W')
+        {
+            if (current_index > 0)
+            {
                 current_index--;
                 needs_redraw = 1;
             }
-            if (current_index < top_index) {
+            if (current_index < top_index)
+            {
                 top_index--;
                 needs_redraw = 1;
             }
         }
-        else if (ch == KEY_DOWN || ch == 's' || ch == 'S') {
-            if (current_index < exercise_count - 1) {
+        else if (ch == KEY_DOWN || ch == 's' || ch == 'S')
+        {
+            if (current_index < exercise_count - 1)
+            {
                 current_index++;
                 needs_redraw = 1;
             }
-            if (current_index >= top_index + visible_spots) {
+            if (current_index >= top_index + visible_spots)
+            {
                 top_index++;
                 needs_redraw = 1;
             }
         }
-        else if (ch == '\n' || ch == KEY_ENTER) {
+        else if (ch == '\n' || ch == KEY_ENTER)
+        {
             *selected_index = current_index;
             return &exercises[current_index];
         }
-        else if (ch == 127 || ch == KEY_BACKSPACE) {
+        else if (ch == 127 || ch == KEY_BACKSPACE)
+        {
             return NULL;
         }
-        else if (ch == KEY_RESIZE) {
+        else if (ch == KEY_RESIZE)
+        {
             border_bottom = LINES - 5;
-            visible_spots = border_bottom - border_top;
-            needs_redraw = 1;
+            visible_spots = border_bottom - border_top - 1;
+            show_exercise_list_commentary(border_top, border_bottom);
+            show_exercise_list_contents(exercises, border_top, border_bottom,
+                                        current_index, top_index, visible_spots);
         }
 
         // Only redraw what changed
-        if (needs_redraw) {
+        if (needs_redraw)
+        {
             // Only redraw the contents, not the commentary
             show_exercise_list_contents(exercises, border_top, border_bottom,
                                         current_index, top_index, visible_spots);

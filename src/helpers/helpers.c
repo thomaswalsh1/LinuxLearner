@@ -230,43 +230,43 @@ void print_options(WINDOW *win, const enum Option options[])
             text = "Press ENTER to test your solution";
             break;
         case RETURN_INSTRUCTIONS:
-            text = "press BACKSPACE to return to instructions";
+            text = "Press BACKSPACE to return to instructions";
             break;
         case RETURN_MENU:
-            text = "press BACKSPACE to return to the menu";
+            text = "Press BACKSPACE to return to the menu";
             break;
         case SELECT_EXERCISE:
-            text = "press ENTER to select an exercise";
+            text = "Press ENTER to select an exercise";
             break;
         case GENERATE_RANDOM:
-            text = "press R to start creating a randomized study set";
+            text = "Press R to start creating a randomized study set";
             break;
         case VIEW_EXERCISES:
-            text = "press V to view exercises";
+            text = "Press V to view exercises";
             break;
         case VIEW_INSTRUCTIONS:
-            text = "press H to for instructions";
+            text = "Press H to for instructions";
             break;
         case VIEW_SETTINGS:
-            text = "press S to go to settings";
+            text = "Press S to go to settings";
             break;
         case RUN_CURRENT_EXERCISES:
-            text = "press ENTER to run current exercises";
+            text = "Press ENTER to run current exercises";
             break;
         case ABLE_EXERCISE:
-            text = "press E to enable/disable the exercise";
+            text = "Press E to enable/disable the exercise";
             break;
         case RUN_SINGULAR_EXERCISE:
-            text = "press ENTER to run this exercise";
+            text = "Press ENTER to run this exercise";
             break;
         case NEXT_EXERCISE:
-            text = "press ENTER to go the next exercise";
+            text = "Press ENTER to go the next exercise";
             break;
         case RETRY_EXERCISE:
-            text = "press ENTER to retry the exercise";
+            text = "Press ENTER to retry the exercise";
             break;
         case GET_HINT:
-            text = "press H to get a hint";
+            text = "Press H to get a hint";
             break;
         case MENU:
             text = "Press M for menu";
