@@ -16,7 +16,7 @@ int main(void)
     raw();
     keypad(stdscr, TRUE);
     noecho();
-    curs_set(0); // hide the cursor
+    curs_set(0); // hides the cursor
 
     // initializing project root
     init_project_root();
@@ -39,6 +39,7 @@ int main(void)
         switch (current_app_state)
         {
 
+        // title screen
         case APP_TITLE:
             show_title();
             ch = getch();
@@ -49,6 +50,7 @@ int main(void)
             if (ch == '\n' || ch == KEY_ENTER)
                 current_app_state = APP_MAIN_MENU;
             break;
+        // main menu
         case APP_MAIN_MENU:
             last_top_index = 0;
             show_main_menu();
@@ -66,6 +68,7 @@ int main(void)
             if (ch == 's' || ch == 'S')
                 current_app_state = APP_SETTINGS;
             break;
+        // explanation menu
         case APP_EXPLANATION:
             show_explanation();
             ch = getch();
@@ -74,6 +77,7 @@ int main(void)
             if (ch == 127 || ch == KEY_BACKSPACE)
                 current_app_state = APP_MAIN_MENU;
             break;
+        // exercise list
         case APP_EXERCISE_LIST:
             current_exercise = run_exercise_list_and_select(&current_exercise_index);
             if (current_exercise != NULL)
@@ -85,6 +89,7 @@ int main(void)
                 current_app_state = APP_MAIN_MENU;
             }
             break;
+        // exercise metadata page
         case APP_EXERCISE_METADATA:
             show_exercise_selected_menu(current_exercise);
             ch = getch();
@@ -100,15 +105,18 @@ int main(void)
                 current_exercise->is_enabled = 1 - enabled;
                 show_exercise_selected_menu(current_exercise);
             }
-            if (ch == 'r' || ch == 'R') {
+            if (ch == 'r' || ch == 'R')
+            {
                 reset_single_exercise(current_exercise);
                 show_exercise_selected_menu(current_exercise);
             }
             break;
+        // running exercise
         case APP_EXERCISE:
             if (current_exercise == NULL)
                 current_exercise = &exercises[current_exercise_index];
-            while (current_exercise->is_completed == 1) {
+            while (current_exercise->is_completed == 1)
+            {
                 current_exercise = &exercises[++current_exercise_index];
             }
             ExerciseResult result = run_exercise(current_exercise);
@@ -142,6 +150,7 @@ int main(void)
                 current_app_state = APP_EXERCISE;
             }
             break;
+        // settings page
         case APP_SETTINGS:
             show_settings();
             ch = getch();
