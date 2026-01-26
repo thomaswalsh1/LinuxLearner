@@ -166,13 +166,23 @@ void show_exercise_list_contents(
         move(y, 0);
         clrtoeol();  // Clear only this line
         
-        if (i == selected_index)
+        if (i == selected_index) {
+            attron(A_REVERSE);
+            mvwhline(stdscr, y, 0, ' ', COLS - 1);
             mvwprintw(stdscr, y, 0, ">");
+        }
+
         mvwprintw(stdscr, y, 2, "%s", viewable_exercises[i].title);
         mvwprintw(stdscr, y, 40, "%s", viewable_exercises[i].lab_dir);
         mvwprintw(stdscr, y, 60, "%s", viewable_exercises[i].is_enabled==1 ? "on" : "off");
         mvwprintw(stdscr, y, 65, "  |  ");
         mvwprintw(stdscr, y, 70, "%s", viewable_exercises[i].is_completed==1 ? "done" : "    ");
+
+        // Turn off highlight
+        if (i == selected_index) {
+            attroff(A_REVERSE);
+        }
+
         y++;
     }
     
