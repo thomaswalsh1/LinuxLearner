@@ -325,3 +325,162 @@ void free_exercise_list(ExerciseList list) {
     }
     free(list.exercises);
 }
+
+void modify_exercise_data(Exercise *ex, const enum PersistentOption option) {
+    if (!ex || !ex->id) {
+        fprintf(stderr, "Invalid exercise provided\n");
+        return;
+    }
+    // find the configuration file for this exercise
+    // we need to search through the labs directory structure
+    char config_path[2048];
+    char temp_path[2048];
+    FILE *fp = NULL;
+    FILE *temp_fp = NULL;
+    
+    // Try to find the config file by scanning labs subdirectories
+    struct dirent **subdirs;
+    int n = scandir("labs/", &subdirs, NULL, alphasort);
+    
+    if (n < 0) {
+        perror("scandir failed");
+        return;
+    }
+    
+    int found = 0;
+    
+    for (int i = 0; i < n && !found; i++) {
+        if (subdirs[i]->d_name[0] == '.') {
+            free(subdirs[i]);
+            continue;
+        }
+        
+        // Build path to config subdirectory
+        char search_path[2048];
+        int written = snprintf(search_path, sizeof(search_path), 
+                              "labs/%s/config", subdirs[i]->d_name);
+        
+        if (written < 0 || written >= (int)sizeof(search_path)) {
+            free(subdirs[i]);
+            continue;
+        }
+        
+        // Scan for .conf files
+        struct dirent **configs;
+        int config_count = scandir(search_path, &configs, NULL, alphasort);
+        
+        if (config_count > 0) {
+            for (int j = 0; j < config_count; j++) {
+                if (configs[j]->d_name[0] != '.' && strlen(configs[j]->d_name) > 5) {
+                    char *ext = configs[j]->d_name + strlen(configs[j]->d_name) - 5;
+                    if (strcmp(ext, ".conf") == 0) {
+                        snprintf(config_path, sizeof(config_path), 
+                                "%s/%s", search_path, configs[j]->d_name);
+                        
+                        // Check if this is the right config file by reading the id
+                        FILE *check_fp = fopen(config_path, "r");
+                        if (check_fp) {
+                            char line[MAX_LINE];
+                            while (fgets(line, sizeof(line), check_fp)) {
+                                line[strcspn(line, "\n")] = '\0';
+                                if (line[0] == '\0' || line[0] == '#' || line[0] == ';') {
+                                    continue;
+                                }
+                                
+                                char *eq = strchr(line, '=');
+                                if (eq) {
+                                    *eq = '\0';
+                                    char *key = line;
+                                    char *value = eq + 1;
+                                    trim_string(key);
+                                    trim_string(value);
+                                    
+                                    if (strcmp(key, "id") == 0 && strcmp(value, ex->id) == 0) {
+                                        found = 1;
+                                        fclose(check_fp);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!found) {
+                                fclose(check_fp);
+                            }
+                        }
+                    }
+                }
+                free(configs[j]);
+                if (found) break;
+            }
+            free(configs);
+        }
+        free(subdirs[i]);
+    }
+    free(subdirs);
+    
+    if (!found) {
+        fprintf(stderr, "Configuration file not found for exercise: %s\n", ex->id);
+        return;
+    }
+    
+    // Open the original config file for reading
+    fp = fopen(config_path, "r");
+    if (!fp) {
+        perror("Failed to open config file");
+        return;
+    }
+    
+    // Create a temporary file for writing
+    snprintf(temp_path, sizeof(temp_path), "%s.tmp", config_path);
+    temp_fp = fopen(temp_path, "w");
+    if (!temp_fp) {
+        perror("Failed to create temporary file");
+        fclose(fp);
+        return;
+    }
+    
+    // Determine the new value based on the option
+    int new_value = (option == MARK_EX_COMPLETE) ? 1 : 0;
+    int completed_found = 0;
+    
+    // Read line by line and modify the completed attribute
+    char line[MAX_LINE];
+    while (fgets(line, sizeof(line), fp)) {
+        // Check if this is the completed line
+        char temp_line[MAX_LINE];
+        strncpy(temp_line, line, sizeof(temp_line) - 1);
+        temp_line[sizeof(temp_line) - 1] = '\0';
+        temp_line[strcspn(temp_line, "\n")] = '\0';
+        
+        if (temp_line[0] != '\0' && temp_line[0] != '#' && temp_line[0] != ';') {
+            char *eq = strchr(temp_line, '=');
+            if (eq) {
+                *eq = '\0';
+                char *key = temp_line;
+                trim_string(key);
+                
+                if (strcmp(key, "completed") == 0) {
+                    fprintf(temp_fp, "completed=%d\n", new_value);
+                    completed_found = 1;
+                    continue;
+                }
+            }
+        }
+        
+        // Write the original line
+        fputs(line, temp_fp);
+    }
+    
+    // If completed attribute was not found, add it at the end
+    if (!completed_found) {
+        fprintf(temp_fp, "completed=%d\n", new_value);
+    }
+    
+    fclose(fp);
+    fclose(temp_fp);
+    
+    // Replace the original file with the temporary file
+    if (rename(temp_path, config_path) != 0) {
+        perror("Failed to replace config file");
+        remove(temp_path);
+    }
+}

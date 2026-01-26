@@ -2,6 +2,7 @@
 #include "helpers.h"
 #include "screens.h"
 #include "app_state.h"
+#include "config_parser.h"
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,6 +22,23 @@ void init_project_root(void)
     }
 }
 
+
+void mark_complete(Exercise *ex) {
+    // change in memory
+    ex->is_completed = 1;
+    // now change on disk
+    modify_exercise_data(ex, MARK_EX_COMPLETE);
+};
+
+void mark_incomplete(Exercise *ex) {
+    // change in memory
+    ex->is_completed = 0;
+    // now change on disk
+    modify_exercise_data(ex, MARK_EX_INCOMPLETE);
+
+}
+
+
 void reset_all_output_files(void)
 {
     if (chdir(project_root) != 0)
@@ -31,6 +49,9 @@ void reset_all_output_files(void)
     for (int i = 0; i < exercise_count; i++)
     {
         const Exercise *ex = &exercises[i];
+
+        mark_incomplete(ex);
+
         // reduntant checking for target file on object
         if (!ex->target_file || strlen(ex->target_file) == 0)
         {
