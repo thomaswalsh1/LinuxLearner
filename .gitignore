@@ -14,6 +14,9 @@ linuxplus-learn
 # any lab output
 output.txt
 
+# binary distribution
+dist
+
 # don't try to upload old labs
 labs_old
 
