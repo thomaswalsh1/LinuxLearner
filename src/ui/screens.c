@@ -102,7 +102,7 @@ void show_title(void)
     const enum Option options[] = {EXIT, CONTINUE, OPTIONS_END};
     clear();
     mvhline(1, 2, ACS_HLINE, COLS - 4);
-    print_page_title("LinuxLearner");
+    print_page_title("LinuxLearner v0.1.1");
     mvhline(3, 2, ACS_HLINE, COLS - 4);
     print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
     print_center_auto(stdscr, 7, "By Thomas Walsh");
