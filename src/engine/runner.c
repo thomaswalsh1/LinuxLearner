@@ -47,7 +47,7 @@ void reset_all_output_files(void)
     }
     for (int i = 0; i < exercise_count; i++)
     {
-        const Exercise *ex = &exercises[i];
+        Exercise *ex = &exercises[i];
 
         mark_incomplete(ex);
 
@@ -102,7 +102,7 @@ void reset_single_exercise(Exercise *ex)
     chdir(project_root);
 }
 
-ExerciseResult run_exercise(const Exercise *ex)
+ExerciseResult run_exercise(Exercise *ex)
 {
     if (ex->is_enabled == 0)
     {
@@ -142,7 +142,7 @@ ExerciseResult run_exercise(const Exercise *ex)
             return ACTION_EXIT;
         if (ch == 127 || ch == KEY_BACKSPACE)
             return ACTION_RETURN;
-        if (ch == '\n' || ch == KEY_ENTER)
+        if (ch == '\n' || ch == KEY_ENTER) {
             if (ex->validate())
             {
                 // success
@@ -154,6 +154,7 @@ ExerciseResult run_exercise(const Exercise *ex)
                 // fail
                 return show_failure(ex->hint);
             }
+        }
     }
 }
 
@@ -186,7 +187,7 @@ Exercise *run_exercise_list_and_select(int *selected_index)
 
     // Initial draw - draw everything once
     show_exercise_list_commentary(border_top, border_bottom);
-    show_exercise_list_contents(exercises, border_top, border_bottom,
+    show_exercise_list_contents(exercises, border_top,
                                 current_index, top_index, visible_spots);
 
     int needs_redraw = 0;
@@ -236,7 +237,7 @@ Exercise *run_exercise_list_and_select(int *selected_index)
             border_bottom = LINES - 5;
             visible_spots = border_bottom - border_top - 1;
             show_exercise_list_commentary(border_top, border_bottom);
-            show_exercise_list_contents(exercises, border_top, border_bottom,
+            show_exercise_list_contents(exercises, border_top,
                                         current_index, top_index, visible_spots);
         }
 
@@ -244,7 +245,7 @@ Exercise *run_exercise_list_and_select(int *selected_index)
         if (needs_redraw)
         {
             // Only redraw the contents, not the commentary
-            show_exercise_list_contents(exercises, border_top, border_bottom,
+            show_exercise_list_contents(exercises, border_top,
                                         current_index, top_index, visible_spots);
         }
     }

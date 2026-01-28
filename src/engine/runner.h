@@ -13,7 +13,7 @@ extern char project_root[512];
 void init_project_root(void);
 
 // Generic runner for any exercise
-ExerciseResult run_exercise(const Exercise *ex);
+ExerciseResult run_exercise(Exercise *ex);
 
 /**
  * Launch a "sandbox version of the shell"

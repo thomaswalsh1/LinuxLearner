@@ -42,7 +42,7 @@ void free_exercise_list(ExerciseList list);
  */
 int (*get_validator_function(const char *validator_name))(void);
 
-const enum PersistentOption {
+enum PersistentOption {
     MARK_EX_COMPLETE,
     MARK_EX_INCOMPLETE
 };

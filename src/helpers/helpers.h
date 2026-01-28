@@ -51,4 +51,6 @@ void return_cursor(WINDOW *win);
 
 void print_border_line(WINDOW *win, int y);
 
+void print_page_title(char *title);
+
 #endif
