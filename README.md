@@ -7,7 +7,7 @@ This version of Linux Learner is missing a heavy amount of features. Linux Learn
 
 
 ## Installation
-LinuxLearner v0.1.1 is built from source. Follow the instructions based on your archietecture.
+LinuxLearner v0.1.1 is built from source. Follow the instructions based on your architecture.
 
 ### Prerequisites
 - C compiler (gcc)
