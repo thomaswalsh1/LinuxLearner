@@ -247,3 +247,19 @@ void show_reset_confirmation_screen(void) {
     print_options(stdscr, options);
     refresh();
 }
+
+void show_reset_done(void) {
+    const enum Option options[] = {RETURN_SETTINGS, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 4, "All exercises have been reset and marked incomplete.");
+    print_options(stdscr, options);
+    refresh();
+}
+
+void show_all_exercises_completed(void) {
+    const enum Option options[] = {RETURN_MENU, OPTIONS_END};
+    clear();
+    print_left_auto(stdscr, 4, "All exercises in your set have been completed. Go to settings to reset them.");
+    print_options(stdscr, options);
+    refresh();
+}

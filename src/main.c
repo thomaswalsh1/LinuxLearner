@@ -177,6 +177,17 @@ int main(void)
                     if (ch2 == '\n' || ch2 == KEY_ENTER)
                     {
                         reset_all_output_files();
+                        int ch3;
+                        show_reset_done();
+                        while(1) {
+                            ch3 = getch();
+                            if (ch3 == KEY_RESIZE) {
+                                show_reset_done();
+                            }
+                            if (ch3 == 127 || ch3 == KEY_BACKSPACE) {
+                                break;
+                            }
+                        }
                         break;
                     }
                     if (ch2 == 127 || ch2 == KEY_BACKSPACE)

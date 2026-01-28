@@ -43,4 +43,8 @@ void show_settings(void);
 
 void show_reset_confirmation_screen(void);
 
+void show_reset_done(void);
+
+void show_all_exercises_completed(void);
+
 #endif
