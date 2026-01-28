@@ -18,6 +18,15 @@ int main(void)
     noecho();
     curs_set(0); // hides the cursor
 
+    // initialize color
+    if (has_colors())
+    {
+        start_color();
+        use_default_colors(); // optional, but nice
+    }
+
+    init_pair(COLOR_TITLE, COLOR_CYAN, -1); 
+    
     // initializing project root
     init_project_root();
 
@@ -179,12 +188,15 @@ int main(void)
                         reset_all_output_files();
                         int ch3;
                         show_reset_done();
-                        while(1) {
+                        while (1)
+                        {
                             ch3 = getch();
-                            if (ch3 == KEY_RESIZE) {
+                            if (ch3 == KEY_RESIZE)
+                            {
                                 show_reset_done();
                             }
-                            if (ch3 == 127 || ch3 == KEY_BACKSPACE) {
+                            if (ch3 == 127 || ch3 == KEY_BACKSPACE)
+                            {
                                 break;
                             }
                         }

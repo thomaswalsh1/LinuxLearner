@@ -1,6 +1,7 @@
 // helpers.c
 #include "helpers.h"
 #include <string.h>
+#include "app_state.h"
 #include <stdio.h>
 
 void print_center(WINDOW *win, int y, const char *text)
@@ -299,4 +300,10 @@ void print_border_line(WINDOW *win, int y) {
 void return_cursor(WINDOW *win)
 {
     wmove(win, LINES - 1, 0);
+}
+
+void print_page_title(char *title) {
+    wattron(stdscr, COLOR_PAIR(COLOR_TITLE) | A_BOLD);
+    print_center_auto(stdscr, 2, title);
+    wattroff(stdscr, COLOR_PAIR(COLOR_TITLE) | A_BOLD);
 }

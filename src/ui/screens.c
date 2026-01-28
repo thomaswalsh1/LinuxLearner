@@ -85,7 +85,11 @@ void show_instructions(const Exercise *ex)
 {
     const enum Option options[] = {EXIT, RETURN_MENU, VALIDATE, SHELL, OPTIONS_END};
     clear();
+
+    mvhline(4, 2, ACS_HLINE, COLS - 4);
     print_left_auto(stdscr, 5, ex->title);
+    mvhline(6, 2, ACS_HLINE, COLS - 4);
+    
     print_left_auto(stdscr, 7, ex->description);
     print_options(stdscr, options);
     refresh();
@@ -95,8 +99,11 @@ void show_title(void)
 {
     const enum Option options[] = {EXIT, CONTINUE, OPTIONS_END};
     clear();
+    mvhline(1, 2, ACS_HLINE, COLS - 4);
+    print_page_title("LinuxLearner");
+    mvhline(3, 2, ACS_HLINE, COLS - 4);
     print_center_auto(stdscr, 5, "CompTIA Linux+ text and file exercises");
-    print_center_auto(stdscr, 9, "By Thomas Walsh");
+    print_center_auto(stdscr, 7, "By Thomas Walsh");
     print_options(stdscr, options);
     refresh();
 }
@@ -202,6 +209,11 @@ void show_exercise_selected_menu(Exercise *ex) {
     snprintf(enabled_line, sizeof(enabled_line), "Enabled: %s", ex->is_enabled==1 ? "On" : "Off");
     snprintf(directory_line, sizeof(directory_line), "Directory: %s", ex->lab_dir);
     snprintf(completed_line, sizeof(completed_line), "Completed: %s", ex->is_completed==1 ? "Yes" : "Not yet finished.");
+    
+    mvhline(1, 2, ACS_HLINE, COLS - 4);
+    print_center_auto(stdscr, 2, ex->lab_dir);
+    mvhline(3, 2, ACS_HLINE, COLS - 4);
+
     print_left_auto(stdscr, 5, ex->title);
     print_left_auto(stdscr, 7, description_line);
     print_left_auto(stdscr, 9, enabled_line);
@@ -216,7 +228,9 @@ void show_exercise_selected_menu(Exercise *ex) {
 void show_main_menu(void) {
     const enum Option options[] = {EXIT, VIEW_INSTRUCTIONS, VIEW_SETTINGS, VIEW_EXERCISES, RUN_CURRENT_EXERCISES, OPTIONS_END};
     clear();
+    mvhline(1, 2, ACS_HLINE, COLS - 4);
     print_center_auto(stdscr, 2, "Main Menu");
+    mvhline(3, 2, ACS_HLINE, COLS - 4);
     print_left_auto(stdscr, 7, "Welcome to the main menu of LinuxLearner.");
     print_options(stdscr, options);
     refresh();
@@ -226,7 +240,9 @@ void show_explanation(void)
 {
     const enum Option options[] = {RETURN_MENU, OPTIONS_END};
     clear();
+    mvhline(1, 2, ACS_HLINE, COLS - 4);
     print_center_auto(stdscr, 2, "How this works:");
+    mvhline(3, 2, ACS_HLINE, COLS - 4);
     print_left_auto(stdscr, 4, "Follow the instructions and enter the corresponding commands to complete exercises.");
     print_options(stdscr, options);
     refresh();
@@ -235,7 +251,9 @@ void show_explanation(void)
 void show_settings(void) {
     const enum Option options[] = {RETURN_MENU, RESET_ALL, OPTIONS_END};
     clear();
+    mvhline(1, 2, ACS_HLINE, COLS - 4);
     print_center_auto(stdscr, 2, "Settings");
+    mvhline(3, 2, ACS_HLINE, COLS - 4);
     print_options(stdscr, options);
     refresh();
 }
