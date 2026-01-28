@@ -1,6 +1,7 @@
 // helpers.c
 #include "helpers.h"
 #include <string.h>
+#include "app_state.h"
 #include <stdio.h>
 
 void print_center(WINDOW *win, int y, const char *text)
@@ -224,28 +225,58 @@ void print_options(WINDOW *win, const enum Option options[])
             text = "Press ENTER to continue";
             break;
         case RESET_ALL:
-            text = "Press R to reset all";
+            text = "Press R to reset all exercises";
             break;
         case VALIDATE:
             text = "Press ENTER to test your solution";
             break;
         case RETURN_INSTRUCTIONS:
-            text = "press BACKSPACE to return to instructions";
+            text = "Press BACKSPACE to return to instructions";
             break;
         case RETURN_MENU:
-            text = "press BACKSPACE to return to the menu";
+            text = "Press BACKSPACE to return to the menu";
             break;
         case SELECT_EXERCISE:
-            text = "press ENTER to select an exercise";
+            text = "Press ENTER to select an exercise";
             break;
         case GENERATE_RANDOM:
-            text = "press R to start creating a randomized study set";
+            text = "Press R to start creating a randomized study set";
             break;
         case VIEW_EXERCISES:
-            text = "press V to view exercises";
+            text = "Press V to view exercises";
+            break;
+        case VIEW_INSTRUCTIONS:
+            text = "Press H to for instructions";
+            break;
+        case VIEW_SETTINGS:
+            text = "Press S to go to settings";
+            break;
+        case RUN_CURRENT_EXERCISES:
+            text = "Press ENTER to run current exercises";
             break;
         case ABLE_EXERCISE:
-            text = "press E to enable/disable the exercise";
+            text = "Press E to enable/disable the exercise";
+            break;
+        case RUN_SINGULAR_EXERCISE:
+            text = "Press ENTER to run this exercise";
+            break;
+        case NEXT_EXERCISE:
+            text = "Press ENTER to go the next exercise";
+            break;
+        case RETRY_EXERCISE:
+            text = "Press ENTER to retry the exercise";
+            break;
+        case GET_HINT:
+            text = "Press H to get a hint";
+            break;
+        case RETURN_SETTINGS:
+            text = "Press BACKSPACE to return to settings";
+            break;
+        case RESET_EXERCISE:
+            text = "Press R to reset this exercise";
+            break;
+        case CONFIRM_RESET:
+            text = "Press ENTER to reset all exercises";
             break;
         case MENU:
             text = "Press M for menu";
@@ -269,4 +300,10 @@ void print_border_line(WINDOW *win, int y) {
 void return_cursor(WINDOW *win)
 {
     wmove(win, LINES - 1, 0);
+}
+
+void print_page_title(char *title) {
+    wattron(stdscr, COLOR_PAIR(COLOR_TITLE) | A_BOLD);
+    print_center_auto(stdscr, 2, title);
+    wattroff(stdscr, COLOR_PAIR(COLOR_TITLE) | A_BOLD);
 }

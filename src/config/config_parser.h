@@ -42,5 +42,15 @@ void free_exercise_list(ExerciseList list);
  */
 int (*get_validator_function(const char *validator_name))(void);
 
+enum PersistentOption {
+    MARK_EX_COMPLETE,
+    MARK_EX_INCOMPLETE
+};
+
+/**
+ * Modify a persistent attribute on disk for an exercise
+ * @param option How you want to change this exercise
+ */
+void modify_exercise_data(Exercise *ex, const enum PersistentOption option);
 
 #endif

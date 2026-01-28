@@ -33,12 +33,24 @@ enum Option
     ABLE_EXERCISE,
     GENERATE_RANDOM,
     SELECT_EXERCISE,
-    OPTIONS_END
+    VIEW_INSTRUCTIONS,
+    VIEW_SETTINGS,
+    RUN_CURRENT_EXERCISES,
+    RUN_SINGULAR_EXERCISE,
+    RETRY_EXERCISE,
+    NEXT_EXERCISE,
+    RETURN_SETTINGS,
+    CONFIRM_RESET,
+    RESET_EXERCISE,
+    GET_HINT,
+    OPTIONS_END,
 };
 void print_options(WINDOW *win, const enum Option options[]);
 
 void return_cursor(WINDOW *win);
 
 void print_border_line(WINDOW *win, int y);
+
+void print_page_title(char *title);
 
 #endif

@@ -3,15 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <dirent.h>
 #include <errno.h>
 #include <ctype.h>
+#include "runner.h"
 
 #define MAX_LINE 512
 #define MAX_EXERCISES 100
 
 // Validator registry - maps validator names to function pointers
-typedef struct {
+typedef struct
+{
     const char *name;
     int (*func)(void);
 } ValidatorEntry;
@@ -55,14 +58,17 @@ static ValidatorEntry validator_registry[] = {
     {"awk_field_separator", validate_awk_field_separator},
     {"awk_file", validate_awk_file},
     {"awk_sandbox", validate_awk_sandbox},
-    {NULL, NULL}
-};
+    {NULL, NULL}};
 
-int (*get_validator_function(const char *validator_name))(void) {
-    if (!validator_name) return NULL;
-    
-    for (int i = 0; validator_registry[i].name != NULL; i++) {
-        if (strcmp(validator_registry[i].name, validator_name) == 0) {
+int (*get_validator_function(const char *validator_name))(void)
+{
+    if (!validator_name)
+        return NULL;
+
+    for (int i = 0; validator_registry[i].name != NULL; i++)
+    {
+        if (strcmp(validator_registry[i].name, validator_name) == 0)
+        {
             return validator_registry[i].func;
         }
     }
@@ -70,78 +76,105 @@ int (*get_validator_function(const char *validator_name))(void) {
 }
 
 // Utility function to trim whitespace from strings
-static void trim_string(char *str) {
-    if (!str) return;
-    
+static void trim_string(char *str)
+{
+    if (!str)
+        return;
+
     // Trim leading whitespace
     char *start = str;
-    while (*start && isspace((unsigned char)*start)) start++;
-    
+    while (*start && isspace((unsigned char)*start))
+        start++;
+
     // Trim trailing whitespace
     char *end = start + strlen(start) - 1;
-    while (end >= start && isspace((unsigned char)*end)) {
+    while (end >= start && isspace((unsigned char)*end))
+    {
         *end = '\0';
         end--;
     }
-    
+
     // Move trimmed string back to original
     memmove(str, start, strlen(start) + 1);
 }
 
 // Parse a single .conf file
-static Exercise parse_conf_file(const char *filepath) {
+static Exercise parse_conf_file(const char *filepath)
+{
     Exercise ex = {0};
     FILE *fp = fopen(filepath, "r");
-    
-    if (!fp) {
+
+    if (!fp)
+    {
         perror("Failed to open config file");
         return ex;
     }
-    
+
     char line[MAX_LINE];
     char *validator_name = NULL;
-    
-    while (fgets(line, sizeof(line), fp)) {
+
+    while (fgets(line, sizeof(line), fp))
+    {
         // Remove newline
         line[strcspn(line, "\n")] = '\0';
-        
+
         // Skip empty lines and comments
-        if (line[0] == '\0' || line[0] == '#' || line[0] == ';') {
+        if (line[0] == '\0' || line[0] == '#' || line[0] == ';')
+        {
             continue;
         }
-        
+
         // Parse key=value pairs
         char *eq = strchr(line, '=');
-        if (!eq) continue;
-        
+        if (!eq)
+            continue;
+
         *eq = '\0';
         char *key = line;
         char *value = eq + 1;
-        
+
         trim_string(key);
         trim_string(value);
-        
-        if (strcmp(key, "id") == 0) {
+
+        if (strcmp(key, "id") == 0)
+        {
             ex.id = strdup(value);
-        } else if (strcmp(key, "title") == 0) {
+        }
+        else if (strcmp(key, "title") == 0)
+        {
             ex.title = strdup(value);
-        } else if (strcmp(key, "description") == 0) {
+        }
+        else if (strcmp(key, "description") == 0)
+        {
             ex.description = strdup(value);
-        } else if (strcmp(key, "lab_dir") == 0) {
+        }
+        else if (strcmp(key, "lab_dir") == 0)
+        {
             ex.lab_dir = strdup(value);
-        } else if (strcmp(key, "hint") == 0) {
+        }
+        else if (strcmp(key, "hint") == 0)
+        {
             ex.hint = strdup(value);
-        } else if (strcmp(key, "target_file") == 0) {
+        }
+        else if (strcmp(key, "target_file") == 0)
+        {
             ex.target_file = strdup(value);
-        } else if (strcmp(key, "validator") == 0) {
+        }
+        else if (strcmp(key, "validator") == 0)
+        {
             validator_name = strdup(value);
         }
+        else if (strcmp(key, "completed") == 0)
+        {
+            ex.is_completed = atoi(value);
+        }
     }
-    
+
     fclose(fp);
-    
+
     // Get validator function pointer from registry
-    if (validator_name) {
+    if (validator_name)
+    {
         ex.validate = get_validator_function(validator_name);
         free(validator_name);
     }
@@ -149,64 +182,76 @@ static Exercise parse_conf_file(const char *filepath) {
     return ex;
 }
 
-ExerciseList load_exercises_from_all(void) {
+ExerciseList load_exercises_from_all(void)
+{
     ExerciseList list = {0};
     struct dirent **subdirs;
     int n;
-    
+
     // Scan the labs/ directory for subdirectories (grep, cut, cat, etc.)
     n = scandir("labs/", &subdirs, NULL, alphasort);
-    if (n < 0) {
+    if (n < 0)
+    {
         perror("scandir");
         return list;
     }
-    
+
     // Allocate space for exercises
     list.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
-    if (!list.exercises) {
+    if (!list.exercises)
+    {
         fprintf(stderr, "Memory allocation failed\n");
         return list;
     }
-    
+
     list.count = 0;
-    
+
     // Iterate through subdirectories
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         // Skip . and .. entries
-        if (subdirs[i]->d_name[0] == '.') {
+        if (subdirs[i]->d_name[0] == '.')
+        {
             free(subdirs[i]);
             continue;
         }
-        
+
         // Build path to config subdirectory
         char config_path[2048];
-        int written = snprintf(config_path, sizeof(config_path), "labs/%s/config", 
+        int written = snprintf(config_path, sizeof(config_path), "labs/%s/config",
                                subdirs[i]->d_name);
-        
-        if (written < 0 || written >= (int)sizeof(config_path)) {
+
+        if (written < 0 || written >= (int)sizeof(config_path))
+        {
             free(subdirs[i]);
             continue;
         }
-        
+
         // Scan the config subdirectory for .conf files
         struct dirent **configs;
         int config_count = scandir(config_path, &configs, NULL, alphasort);
-        
-        if (config_count > 0) {
+
+        if (config_count > 0)
+        {
             // Process each .conf file in this config directory
-            for (int j = 0; j < config_count && list.count < MAX_EXERCISES; j++) {
-                if (configs[j]->d_name[0] != '.' && 
-                    strlen(configs[j]->d_name) > 5) {
-                    
+            for (int j = 0; j < config_count && list.count < MAX_EXERCISES; j++)
+            {
+                if (configs[j]->d_name[0] != '.' &&
+                    strlen(configs[j]->d_name) > 5)
+                {
+
                     char *ext = configs[j]->d_name + strlen(configs[j]->d_name) - 5;
-                    if (strcmp(ext, ".conf") == 0) {
+                    if (strcmp(ext, ".conf") == 0)
+                    {
                         char filepath[2048];
-                        written = snprintf(filepath, sizeof(filepath), "%s/%s", 
+                        written = snprintf(filepath, sizeof(filepath), "%s/%s",
                                            config_path, configs[j]->d_name);
-                        
-                        if (written >= 0 && written < (int)sizeof(filepath)) {
+
+                        if (written >= 0 && written < (int)sizeof(filepath))
+                        {
                             Exercise ex = parse_conf_file(filepath);
-                            if (ex.id) {
+                            if (ex.id)
+                            {
                                 list.exercises[list.count++] = ex;
                             }
                         }
@@ -216,48 +261,55 @@ ExerciseList load_exercises_from_all(void) {
             }
             free(configs);
         }
-        
+
         free(subdirs[i]);
     }
     free(subdirs);
-    
+
     return list;
 }
 
-ExerciseList load_exercises_from_config(const char *config_dir) {
+ExerciseList load_exercises_from_config(const char *config_dir)
+{
     ExerciseList list = {0};
     struct dirent **namelist;
     int n;
-    
+
     n = scandir(config_dir, &namelist, NULL, NULL);
-    
-    if (n < 0) {
+
+    if (n < 0)
+    {
         perror("scandir");
         return list;
     }
-    
+
     // Allocate space for exercises
     list.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
-    if (!list.exercises) {
+    if (!list.exercises)
+    {
         fprintf(stderr, "Memory allocation failed\n");
         return list;
     }
-    
+
     list.count = 0;
-    
+
     // Process each .conf file
-    for (int i = 0; i < n && list.count < MAX_EXERCISES; i++) {
-        if (namelist[i]->d_name[0] != '.' && 
-            strlen(namelist[i]->d_name) > 5) {
-            
+    for (int i = 0; i < n && list.count < MAX_EXERCISES; i++)
+    {
+        if (namelist[i]->d_name[0] != '.' &&
+            strlen(namelist[i]->d_name) > 5)
+        {
+
             char *ext = namelist[i]->d_name + strlen(namelist[i]->d_name) - 5;
-            if (strcmp(ext, ".conf") == 0) {
+            if (strcmp(ext, ".conf") == 0)
+            {
                 char filepath[512];
-                snprintf(filepath, sizeof(filepath), "%s/%s", 
+                snprintf(filepath, sizeof(filepath), "%s/%s",
                          config_dir, namelist[i]->d_name);
-                
+
                 Exercise ex = parse_conf_file(filepath);
-                if (ex.id) {
+                if (ex.id)
+                {
                     list.exercises[list.count++] = ex;
                 }
             }
@@ -265,44 +317,51 @@ ExerciseList load_exercises_from_config(const char *config_dir) {
         free(namelist[i]);
     }
     free(namelist);
-    
+
     return list;
 }
 
-ExerciseList test_exercises_from_config(const char *config_dir) {
+ExerciseList test_exercises_from_config(const char *config_dir)
+{
     ExerciseList list = {0};
     struct dirent **namelist;
     int n;
-    
+
     n = scandir(config_dir, &namelist, NULL, alphasort);
-    
-    if (n < 0) {
+
+    if (n < 0)
+    {
         perror("scandir");
         return list;
     }
-    
+
     // Allocate space for exercises
     list.exercises = malloc(sizeof(Exercise) * MAX_EXERCISES);
-    if (!list.exercises) {
+    if (!list.exercises)
+    {
         fprintf(stderr, "Memory allocation failed\n");
         return list;
     }
-    
+
     list.count = 0;
-    
+
     // Process each .conf file
-    for (int i = 0; i < n && list.count < MAX_EXERCISES; i++) {
-        if (namelist[i]->d_name[0] != '.' && 
-            strlen(namelist[i]->d_name) > 5) {
-            
+    for (int i = 0; i < n && list.count < MAX_EXERCISES; i++)
+    {
+        if (namelist[i]->d_name[0] != '.' &&
+            strlen(namelist[i]->d_name) > 5)
+        {
+
             char *ext = namelist[i]->d_name + strlen(namelist[i]->d_name) - 5;
-            if (strcmp(ext, ".conf") == 0) {
+            if (strcmp(ext, ".conf") == 0)
+            {
                 char filepath[512];
-                snprintf(filepath, sizeof(filepath), "%s/%s", 
+                snprintf(filepath, sizeof(filepath), "%s/%s",
                          config_dir, namelist[i]->d_name);
-                
+
                 Exercise ex = parse_conf_file(filepath);
-                if (ex.id) {
+                if (ex.id)
+                {
                     list.exercises[list.count++] = ex;
                 }
             }
@@ -310,18 +369,227 @@ ExerciseList test_exercises_from_config(const char *config_dir) {
         free(namelist[i]);
     }
     free(namelist);
-    
+
     return list;
 }
 
-void free_exercise_list(ExerciseList list) {
-    for (int i = 0; i < list.count; i++) {
-        if (list.exercises[i].id) free((void *)list.exercises[i].id);
-        if (list.exercises[i].title) free((void *)list.exercises[i].title);
-        if (list.exercises[i].description) free((void *)list.exercises[i].description);
-        if (list.exercises[i].lab_dir) free((void *)list.exercises[i].lab_dir);
-        if (list.exercises[i].hint) free((void *)list.exercises[i].hint);
-        if (list.exercises[i].target_file) free((void *)list.exercises[i].target_file);
+void free_exercise_list(ExerciseList list)
+{
+    for (int i = 0; i < list.count; i++)
+    {
+        if (list.exercises[i].id)
+            free((void *)list.exercises[i].id);
+        if (list.exercises[i].title)
+            free((void *)list.exercises[i].title);
+        if (list.exercises[i].description)
+            free((void *)list.exercises[i].description);
+        if (list.exercises[i].lab_dir)
+            free((void *)list.exercises[i].lab_dir);
+        if (list.exercises[i].hint)
+            free((void *)list.exercises[i].hint);
+        if (list.exercises[i].target_file)
+            free((void *)list.exercises[i].target_file);
     }
     free(list.exercises);
+}
+
+void modify_exercise_data(Exercise *ex, const enum PersistentOption option)
+{
+    // reset to lab directory
+    if (chdir(project_root) != 0)
+    {
+        perror("chdir to project root");
+        return;
+    }
+
+    if (!ex || !ex->id)
+    {
+        fprintf(stderr, "Invalid exercise provided\n");
+        return;
+    }
+    // find the configuration file for this exercise
+    // we need to search through the labs directory structure
+    char config_path[2048];
+    char temp_path[2048];
+    FILE *fp = NULL;
+    FILE *temp_fp = NULL;
+
+    // Try to find the config file by scanning labs subdirectories
+    struct dirent **subdirs;
+    int n = scandir("labs/", &subdirs, NULL, alphasort);
+
+    if (n < 0)
+    {
+        perror("scandir failed");
+        return;
+    }
+
+    int found = 0;
+
+    for (int i = 0; i < n && !found; i++)
+    {
+        if (subdirs[i]->d_name[0] == '.')
+        {
+            free(subdirs[i]);
+            continue;
+        }
+
+        // Build path to config subdirectory
+        char search_path[2048];
+        int written = snprintf(search_path, sizeof(search_path),
+                               "labs/%s/config", subdirs[i]->d_name);
+
+        if (written < 0 || written >= (int)sizeof(search_path))
+        {
+            free(subdirs[i]);
+            continue;
+        }
+
+        // Scan for .conf files
+        struct dirent **configs;
+        int config_count = scandir(search_path, &configs, NULL, alphasort);
+
+        if (config_count > 0)
+        {
+            for (int j = 0; j < config_count; j++)
+            {
+                if (configs[j]->d_name[0] != '.' && strlen(configs[j]->d_name) > 5)
+                {
+                    char *ext = configs[j]->d_name + strlen(configs[j]->d_name) - 5;
+                    if (strcmp(ext, ".conf") == 0)
+                    {
+                        int config_bytes = snprintf(config_path, sizeof(config_path),
+                                 "%s/%s", search_path, configs[j]->d_name);
+                        if (config_bytes < 0 || config_bytes >= (int)sizeof(config_path))
+                        {
+                            perror("Config path is too long");
+                            continue; // or return error
+                        }
+                        // Check if this is the right config file by reading the id
+                        FILE *check_fp = fopen(config_path, "r");
+                        if (check_fp)
+                        {
+                            char line[MAX_LINE];
+                            while (fgets(line, sizeof(line), check_fp))
+                            {
+                                line[strcspn(line, "\n")] = '\0';
+                                if (line[0] == '\0' || line[0] == '#' || line[0] == ';')
+                                {
+                                    continue;
+                                }
+
+                                char *eq = strchr(line, '=');
+                                if (eq)
+                                {
+                                    *eq = '\0';
+                                    char *key = line;
+                                    char *value = eq + 1;
+                                    trim_string(key);
+                                    trim_string(value);
+
+                                    if (strcmp(key, "id") == 0 && strcmp(value, ex->id) == 0)
+                                    {
+                                        found = 1;
+                                        fclose(check_fp);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!found)
+                            {
+                                fclose(check_fp);
+                            }
+                        }
+                    }
+                }
+                free(configs[j]);
+                if (found)
+                    break;
+            }
+            free(configs);
+        }
+        free(subdirs[i]);
+    }
+    free(subdirs);
+
+    if (!found)
+    {
+        fprintf(stderr, "Configuration file not found for exercise: %s\n", ex->id);
+        return;
+    }
+
+    // Open the original config file for reading
+    fp = fopen(config_path, "r");
+    if (!fp)
+    {
+        perror("Failed to open config file");
+        return;
+    }
+
+    // Create a temporary file for writing
+    int bytes = snprintf(temp_path, sizeof(temp_path), "%s.tmp", config_path);
+    if (bytes < 0 || bytes >= (int)sizeof(temp_path))
+    {
+        perror("temp_path gathering failed");
+        return;
+    }
+    temp_fp = fopen(temp_path, "w");
+    if (!temp_fp)
+    {
+        perror("Failed to create temporary file");
+        fclose(fp);
+        return;
+    }
+
+    // Determine the new value based on the option
+    int new_value = (option == MARK_EX_COMPLETE) ? 1 : 0;
+    int completed_found = 0;
+
+    // Read line by line and modify the completed attribute
+    char line[MAX_LINE];
+    while (fgets(line, sizeof(line), fp))
+    {
+        // Check if this is the completed line
+        char temp_line[MAX_LINE];
+        strncpy(temp_line, line, sizeof(temp_line) - 1);
+        temp_line[sizeof(temp_line) - 1] = '\0';
+        temp_line[strcspn(temp_line, "\n")] = '\0';
+
+        if (temp_line[0] != '\0' && temp_line[0] != '#' && temp_line[0] != ';')
+        {
+            char *eq = strchr(temp_line, '=');
+            if (eq)
+            {
+                *eq = '\0';
+                char *key = temp_line;
+                trim_string(key);
+
+                if (strcmp(key, "completed") == 0)
+                {
+                    fprintf(temp_fp, "completed=%d\n", new_value);
+                    completed_found = 1;
+                    continue;
+                }
+            }
+        }
+
+        // Write the original line
+        fputs(line, temp_fp);
+    }
+
+    // If completed attribute was not found, add it at the end
+    if (!completed_found)
+    {
+        fprintf(temp_fp, "completed=%d\n", new_value);
+    }
+
+    fclose(fp);
+    fclose(temp_fp);
+
+    // Replace the original file with the temporary file
+    if (rename(temp_path, config_path) != 0)
+    {
+        perror("Failed to replace config file");
+        remove(temp_path);
+    }
 }
