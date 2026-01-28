@@ -1,26 +1,48 @@
-# Compiler
+# =========================
+# Project configuration
+# =========================
+
+# Compiler (native)
 CC = gcc
+
 # Compiler flags
-CFLAGS = -Wall -Wextra -g -I./src -I./src/helpers -I./src/engine -I./src/ui -I./src/validators -I./src/config
+CFLAGS = -Wall -Wextra -g \
+	-I./src \
+	-I./src/helpers \
+	-I./src/engine \
+	-I./src/ui \
+	-I./src/validators \
+	-I./src/config
+
 # Linker flags
 LDFLAGS = -lncurses
+
 # Source files (recursive)
 SRCS := $(shell find src -name '*.c')
-# Object files
-OBJS := $(SRCS:.c=.o)
-# Target executable
-TARGET = linuxplus-learn
-# Version
-VERSION = 0.2.0
-# Project name (use current directory name)
-PROJECT_NAME = $(shell basename $(CURDIR))
-# Release name
-RELEASE_NAME = linuxlearner-v$(VERSION)
 
-# Default target - just compile
+# Object files (native build only)
+OBJS := $(SRCS:.c=.o)
+
+# Target executable
+TARGET = linuxlearner
+
+# Version
+VERSION = 0.1.1
+
+# Project name (current directory)
+PROJECT_NAME = $(shell basename $(CURDIR))
+
+# Release naming
+RELEASE_NAME = linuxlearner-v$(VERSION)
+BIN_RELEASE_X86 = $(RELEASE_NAME)-linux-x86_64
+
+# =========================
+# Default build
+# =========================
+
 all: $(TARGET)
 
-# Link the program
+# Link native build
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -28,11 +50,18 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean build files
+
+# =========================
+# Cleanup
+# =========================
+
 clean:
 	rm -f $(OBJS) $(TARGET)
 
-# Create source distribution tarball
+# =========================
+# Source release
+# =========================
+
 release-src: clean
 	@echo "Creating source distribution..."
 	cd .. && tar --exclude='.git' \
@@ -51,22 +80,25 @@ release-src: clean
 		-czf $(RELEASE_NAME)-source.tar.gz $(PROJECT_NAME)/
 	@echo "Source tarball created: ../$(RELEASE_NAME)-source.tar.gz"
 
-release-bin: clean all
-	@echo "Creating binary release..."
-	mkdir -p dist/$(BIN_RELEASE_NAME)
+# =========================
+# x86_64 binary release
+# =========================
 
-	# Copy binary
-	cp $(TARGET) dist/$(BIN_RELEASE_NAME)/
+release-bin86: clean all
+	@echo "Creating x86_64 binary release..."
+	mkdir -p dist/$(BIN_RELEASE_X86)
 
-	# Copy runtime files (adjust as needed)
-	cp -r labs dist/$(BIN_RELEASE_NAME)/
-	cp README.md dist/$(BIN_RELEASE_NAME)/
-	cp LICENSE dist/$(BIN_RELEASE_NAME)/ 2>/dev/null || true
+	cp $(TARGET) dist/$(BIN_RELEASE_X86)/
+	cp -r labs dist/$(BIN_RELEASE_X86)/
+	cp README.md dist/$(BIN_RELEASE_X86)/
+	cp LICENSE dist/$(BIN_RELEASE_X86)/ 2>/dev/null || true
 
-	# Create tarball
-	cd dist && tar -czf ../$(BIN_RELEASE_NAME).tar.gz $(BIN_RELEASE_NAME)
+	cd dist && tar -czf ../$(BIN_RELEASE_X86).tar.gz $(BIN_RELEASE_X86)
 
-	@echo "Binary release created: $(BIN_RELEASE_NAME).tar.gz"
-	
+	@echo "Binary release created: $(BIN_RELEASE_X86).tar.gz"
+
+# =========================
 # Phony targets
-.PHONY: all clean release
+# =========================
+
+.PHONY: all clean arm release-src release-bin86 release-binarm

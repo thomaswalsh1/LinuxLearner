@@ -1,6 +1,9 @@
 # build artifacts
 *.o
+
+# runners
 linuxplus-learn
+linuxlearner*
 
 # debug
 *.log
@@ -16,6 +19,7 @@ output.txt
 
 # binary distribution
 dist
+*Bin
 
 # don't try to upload old labs
 labs_old

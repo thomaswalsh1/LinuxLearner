@@ -1,59 +1,30 @@
-# Linux Learner 0.1.1
+
+# LinuxLearner v0.1.1
 
 Currently in its pre-alpha stage, Linux Learner is a software package that creates an environment with folders and files on your Linux machine to practice the commands covered in the CompTIA Linux+ V8 XK0-006 exam.
 
-### Note:
-
-This version of Linux Learner is missing a heavy amount of features. Linux Learner Alpha (0.2.0) will bring a near-permanent workflow as the basis for all future versions.
-
-The current version is not intended to be installed or downloaded, as this repository currently only serves to showcase the development process.
+This version of Linux Learner is missing a heavy amount of features. Linux Learner Alpha (0.2.0) will bring a near-permanent basis for all future versions.
 
 
 ## Installation
-
-Stay tuned for updates on how to install this application. I am still working out how I plan to deploy this application to be installed by other computers and distributions.
+LinuxLearner v0.1.1 is built from source. Follow the instructions based on your archietecture.
 
 ### Prerequisites
-
-_This project was created on a Debian-based system, and I am still experimenting with what distributions it will be available on, as well as what prerequisites and permissions are needed._
-
-For now, here is a placeholder:
-
+- C compiler (gcc)
+- Make utility (make)
+- ncurses libraries
 ```bash
-Install something
+  sudo apt update
+  sudo apt install build-essential libncurses-dev
 ```
 
-## Usage
-
-Just like with the prerequisites, this is still being refined pre-deployment.
-Stay tuned!
-
-
+### Building Binaries
+- Using x86_64 archietecture:
 ```bash
-Example
+  make all
 ```
 
-## Deploy
+### Usage
+```bash
+./LinuxLearner
 
-Stay tuned!
-
-## Technologies
-
-* [ncurses](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/) - Terminal UI interface for this application.
-
-## Contributing
-
-Stay tuned!
-
-## Documentation
-
-Stay tuned!
-
-## Acknowledgments
-
-* [Linus Torvalds](https://github.com/torvalds)
-* [Dan Abramov](https://github.com/gaearon)
-* [Carlos Acutis](https://en.wikipedia.org/wiki/Carlo_Acutis)
-
-## License
-GNU General Public License v3.0
