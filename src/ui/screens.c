@@ -87,9 +87,11 @@ void show_instructions(const Exercise *ex)
     clear();
 
     mvhline(4, 2, ACS_HLINE, COLS - 4);
+
+    print_left_auto(stdscr, 4, ex->lab_dir);
     print_left_auto(stdscr, 5, ex->title);
     mvhline(6, 2, ACS_HLINE, COLS - 4);
-    
+
     print_left_auto(stdscr, 7, ex->description);
     print_options(stdscr, options);
     refresh();
